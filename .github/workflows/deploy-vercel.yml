@@ -1,13 +1,19 @@
 name: Deploy to Vercel
 
-# Optional. Runs only once VERCEL_TOKEN, VERCEL_ORG_ID and VERCEL_PROJECT_ID
-# exist as repository secrets. If you connect the repo in the Vercel dashboard
-# instead, Vercel builds on every push on its own and this workflow can be
-# deleted — you do not need both.
+# Optional, and manual-only on purpose.
+#
+# The recommended route is to connect this repository in the Vercel dashboard,
+# which builds every push on its own — see README. This workflow exists for the
+# case where you would rather deploy from CI with a token. Run it from the
+# Actions tab once VERCEL_TOKEN, VERCEL_ORG_ID and VERCEL_PROJECT_ID exist as
+# repository secrets. Keeping it manual means the two systems can never race.
 on:
-  push:
-    branches: ['**']
   workflow_dispatch:
+    inputs:
+      production:
+        description: 'Deploy to production (otherwise a preview)'
+        type: boolean
+        default: false
 
 jobs:
   deploy:
@@ -36,10 +42,10 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          PROD: ${{ github.ref_name == 'main' && '--prod' || '' }}
+          PROD: ${{ inputs.production && '--prod' || '' }}
         run: |
           npm install --global vercel@latest
-          vercel pull --yes --environment=${{ github.ref_name == 'main' && 'production' || 'preview' }} --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel pull --yes --environment=${{ inputs.production && 'production' || 'preview' }} --token="${{ secrets.VERCEL_TOKEN }}"
           vercel build $PROD --token="${{ secrets.VERCEL_TOKEN }}"
           vercel deploy --prebuilt $PROD --token="${{ secrets.VERCEL_TOKEN }}" | tee url.txt
           echo "### Deployed" >> "$GITHUB_STEP_SUMMARY"

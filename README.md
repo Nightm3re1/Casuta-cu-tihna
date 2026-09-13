@@ -121,12 +121,14 @@ wants. Pick one of:
 1. **Connect the repo in the Vercel dashboard** (recommended). New Project →
    import `Nightm3re1/Casuta-cu-tihna` → framework auto-detects as Next.js →
    Deploy. Vercel then builds every push and gives preview URLs per branch.
-   Delete `.github/workflows/deploy-vercel.yml` if you go this way.
+   Nothing else to do — the CI deploy workflow is manual-only, so it will not
+   fire behind your back.
 
-2. **Deploy from CI.** Add repository secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`
-   and `VERCEL_PROJECT_ID`; `.github/workflows/deploy-vercel.yml` then deploys
-   on every push (production from `main`, previews elsewhere). It no-ops
-   silently until those secrets exist.
+2. **Deploy from CI instead.** Add repository secrets `VERCEL_TOKEN`,
+   `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`, then run
+   `.github/workflows/deploy-vercel.yml` from the Actions tab (tick
+   *production* for a live deploy, leave it unticked for a preview). It is
+   manual-only so it can never race the dashboard integration.
 
 Set the real domain in `src/content/site.ts` (`domain`) and in `metadataBase`
 in `src/app/layout.tsx` — canonical URLs, hreflang, the sitemap and robots.txt
