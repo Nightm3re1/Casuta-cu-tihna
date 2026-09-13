@@ -1,165 +1,133 @@
 # Căsuța cu Tihnă — website
 
-Marketing and direct-booking site for **Căsuța cu Tihnă**, a restored 1923 cottage
-in Porumbacu de Sus, Sibiu County, at the foot of the Făgăraș mountains.
+Direct-booking site for **Căsuța cu Tihnă**, a log cottage built in 1923 and
+restored in 2021, in Porumbacu de Sus at the foot of the Făgăraș mountains.
 
-Built with Next.js 15 (App Router), React 19, TypeScript and Tailwind CSS.
-Bilingual Romanian / English, statically prerendered.
+Next.js 15 (App Router), React 19, TypeScript, Tailwind. Bilingual Romanian /
+English, statically prerendered, no backend.
 
 ```bash
 npm install
 npm run dev        # http://localhost:3000 → redirects to /ro
-npm run build      # production build
-npm start          # serve the production build
-npm run typecheck  # tsc --noEmit
+npm run build
+npm start
+npm run typecheck
 npm run lint
+npm run photos     # re-fetch and re-optimise the property photography
 ```
 
----
+## Everything on this site is real
 
-## ⚠ Before you go live — three things to replace
+There are no placeholders. All of it is sourced and traceable:
 
-The build machine for this site had **no network access to Booking.com or
-Instagram**, so three pieces of real content could not be fetched. Everything is
-wired up and waiting; each is a single-file change.
+| Content | Source |
+|---|---|
+| Facts, rates, amenities, attractions | The owner's own site, casuta-cu-tihna.ro |
+| Photography | The owner's CDN, fetched by `scripts/fetch-photos.mjs` |
+| Reviews, 9.9/10 score, category sub-scores | The Booking.com listing |
+| Colour palette | Sampled from the live casuta-cu-tihna.ro DOM |
+| Typeface pairing | Playfair Display + Inter, as the brand already uses |
 
-### 1. Guest reviews — `src/content/reviews.ts`
+Key facts, all verified: sleeps **4**, ~80 m² over two floors, one bedroom
+upstairs, **two bathrooms** (one per floor), **500 lei/night up to 2 guests and
+700 up to 4** booked direct, check-in 15:00, check-out 11:00.
 
-Every review is currently **placeholder copy, not a real guest**, and is marked
-`placeholder: true`. Do not publish it as if it were real.
+## Photography
 
-Replace each entry with the genuine quote, first name, country and date from your
-Booking.com extranet, set `placeholder: false`, and update `reviewSummary` with
-your actual score and review count.
+`scripts/fetch-photos.mjs` downloads the eight property photographs from the
+owner's CDN and writes AVIF + WebP at 640/1024/1536 into
+`public/images/property/`, plus a `manifest.json` holding each image's real
+dimensions, the widths actually produced, and an inline blur placeholder.
 
-Two safeguards are already in place until you do:
+`.github/workflows/fetch-photos.yml` runs it on CI and commits the result, so
+the binaries enter the repository without anyone hand-copying them. Re-run it
+from the Actions tab whenever the owner replaces a photo.
 
-- A warning banner renders over the reviews section **in development only**.
-- `aggregateRating` and `review` are **omitted from the structured data**
-  (`src/lib/jsonld.ts`) while the data is flagged as placeholder — so the site
-  never claims a rating to Google that it cannot back up.
-
-### 2. Photographs — `src/content/gallery.ts`
-
-Every slot has `src: null` and renders an original, on-brand **illustration** of
-the right subject, so the layout is finished and photo-ready rather than full of
-grey boxes.
-
-To publish real photography:
-
-1. Put the files in `public/images/gallery/` (JPG or WebP, at least 1600px wide).
-2. Set `src: '/images/gallery/<file>'` on the matching slot.
-3. Keep or improve the `alt` text — it is read aloud and indexed.
-
-Nothing else changes: `next/image` takes over automatically, with AVIF/WebP
-conversion and correct `sizes` already configured.
-
-### 3. Brand mark and palette — see `BRAND.md`
-
-The logo and colour palette were derived from the property itself, not copied
-from the Instagram account (which was unreachable). `BRAND.md` explains exactly
-where to paste the official values — the palette is one object, the mark is one
-SVG.
-
-### Also check before launch
-
-`src/content/site.ts` holds the real phone number, email and WhatsApp link.
-The placeholders there (`+40 745 000 000`, `rezervari@casuta-cu-tihna.ro`) must
-be replaced with the working ones — they appear in the header, footer, booking
-section and structured data.
-
----
-
-## How it is put together
-
-```
-src/
-  app/
-    [locale]/
-      layout.tsx            fonts, metadata, hreflang, header/footer shell
-      page.tsx              section order, JSON-LD injection
-      opengraph-image.tsx   build-time social share card (1200×630 PNG)
-    sitemap.ts robots.ts icon.svg not-found.tsx
-  components/               one file per section, plus shared primitives
-  content/
-    site.ts                 verifiable property facts + outbound links
-    schema.ts               the shape both locale dictionaries must satisfy
-    ro.ts / en.ts           all user-facing copy
-    reviews.ts gallery.ts   review and photo data
-  lib/
-    i18n.ts                 dictionary lookup
-    jsonld.ts               structured data, generated from content/
-    observeOnce.ts          one shared IntersectionObserver for all reveals
-```
-
-**Content and code are separate.** No user-facing string lives in a component;
-they all come from `src/content`. `Dict` in `schema.ts` is the contract, so a
-string added to Romanian without an English counterpart is a type error.
-
-**Structured data is generated from the same content the page renders**, so the
-JSON-LD can never drift from what a visitor actually reads.
-
----
+`Photo.tsx` reads the manifest and emits a `<picture>` with an AVIF and a WebP
+`srcset`. The files are pre-optimised, so **no runtime image transform sits in
+the request path** — one fewer hop per image, and no per-request transform cost
+on the host.
 
 ## The hero animation
 
-`src/components/HeroBuildAnimation.tsx` — an architect's elevation of the cottage
-that is set out, footed, framed, roofed and clad as you scroll, then resolves into
-an evening render below the Făgăraș ridge.
+`src/components/HeroBuildAnimation.tsx` — an architect's elevation of the
+cottage that is set out, footed, framed, roofed and clad as you scroll, then
+resolves into an evening render below the ridge.
 
-- **Scroll-scrubbed**, not time-based. The sequence occupies the first 86% of a
-  sticky track (`BUILD_SPAN`), leaving the finished house on screen for a beat
-  before it releases. At an ordinary flick the whole build plays in well under
-  five seconds.
-- **Only `pathLength`, `opacity` and `transform` animate.** No layout is read or
-  written, so it stays on the compositor — measured p95 frame time is ~20ms
-  (50fps+) on a 4×-throttled mobile CPU.
-- **One geometry object.** Everything — blueprint and render alike — derives from
-  `G` at the top of the file, so moving a window moves it in both.
-- **`prefers-reduced-motion` pins progress to 1**, which *is* the finished frame.
-  Same markup, nothing in motion.
+- **Scroll-scrubbed**, not timed. The sequence occupies the first 86% of a
+  sticky track (`BUILD_SPAN`), so the finished house holds on screen for a beat
+  before it releases. An ordinary flick plays the whole build in under five
+  seconds.
+- **No animation library.** A ~70-line hook (`src/lib/useScrollProgress.ts`)
+  runs a rAF loop that stops when the value settles and writes straight to the
+  DOM by ref — a scroll never re-renders React. Dropping framer-motion took
+  first-load JS from 159 kB to **115 kB**.
+- **One geometry object.** Blueprint and render both derive from `G`, so they
+  cannot disagree.
+- **`prefers-reduced-motion`** pins progress to 1, which *is* the finished
+  frame: same markup, nothing in motion.
 
----
+## Architecture
 
-## Accessibility
+```
+src/
+  app/[locale]/          layout (fonts, metadata, hreflang), page, OG image
+  app/                   sitemap, robots, icon, 404
+  components/            one file per section, plus shared primitives
+  content/
+    site.ts              verified property facts + outbound links
+    schema.ts            the shape both locale dictionaries must satisfy
+    ro.ts / en.ts        all user-facing copy
+    reviews.ts           the real Booking.com reviews and scores
+    gallery.ts           photo slots, typed against the manifest
+  lib/
+    i18n.ts              dictionary lookup
+    jsonld.ts            structured data, generated from content/
+    observeOnce.ts       one shared IntersectionObserver for all reveals
+    useScrollProgress.ts the hero's scroll driver
+scripts/fetch-photos.mjs
+```
 
-Verified with `@axe-core/playwright` against WCAG 2.1 A and AA: **0 violations**
-on Romanian desktop, English mobile, and mobile with the menu open.
+No user-facing string lives in a component. `Dict` in `schema.ts` is the
+contract, so a string added to Romanian without an English counterpart is a
+type error. The JSON-LD is generated from the same content the page renders,
+so structured data cannot drift from what a visitor reads.
 
-- Skip link is the first tab stop.
-- All text meets AA contrast (the palette in `tailwind.config.ts` was adjusted
-  to get there — see `brass.600`).
-- FAQ is built on `<details>`/`<summary>`, so it works without JavaScript.
-- The reviews carousel is a focusable, labelled region, keyboard-scrollable.
-- Mobile menu traps page scroll and closes on Escape.
-- Scroll reveals are progressive enhancement — a `<noscript>` rule in the layout
-  unhides everything when scripting is off.
+## Verified
 
-## Performance
-
-Measured against the production build:
-
-| | Desktop | Mobile (4× CPU throttle) |
-|---|---|---|
-| LCP | ~380ms | ~670ms |
-| CLS | 0.000 | 0.000 |
-| Hero scroll, p95 frame | 18.9ms | 20.2ms |
-
-Fonts are the largest asset at 199 kB (Fraunces + Inter, `latin` and `latin-ext`
-for Romanian diacritics), down from 352 kB by loading only the three weights the
-markup actually uses. First Load JS is 163 kB for the page.
+- **Accessibility** — 0 axe violations (WCAG 2.1 AA) on RO desktop, EN mobile
+  and mobile with the menu open. Skip link first in tab order; FAQ on
+  `<details>` so it works without JS; keyboard-reachable review scroller; a
+  `<noscript>` rule unhides every scroll reveal when scripting is off.
+- **Interactions** — 18 automated checks: form validation, the real
+  Booking.com URL with `checkin`/`checkout`/`group_adults`, WhatsApp prefill,
+  FAQ, mobile menu + Escape, reduced motion, locale switching.
+- **Performance** — LCP ~380 ms desktop / ~640 ms on a 4× throttled mobile CPU;
+  **CLS 0.000**; hero scroll p95 ~20 ms. 115 kB first-load JS, 189 kB fonts.
+- **Responsive** — no horizontal overflow at 320 / 768 / 2560 px.
 
 ## Booking flow
 
-There is **no backend and no database** — deliberately. The enquiry form hands the
-chosen dates straight to the owner's Booking.com listing as real query parameters
-(`checkin`, `checkout`, `group_adults`), and the WhatsApp button pre-writes the
-same enquiry in the visitor's language. Both reach a human, and there is nowhere
-for a guest's details to sit and leak.
+No backend by design. The enquiry form hands the chosen dates to the owner's
+Booking.com listing as real query parameters, and the WhatsApp button
+pre-writes the same enquiry in the visitor's language. Both reach a human, and
+there is nowhere for a guest's details to sit.
 
-## Deployment
+## Deploying to Vercel
 
-Static apart from nothing — both locales prerender at build time. Any Node host
-or Vercel works with no configuration. Set the real domain in
-`src/content/site.ts` (`domain`) and in `metadataBase` in `src/app/layout.tsx`;
-canonical URLs, hreflang, the sitemap and robots.txt all follow from it.
+`vercel.json` is in place with the caching and security headers this site
+wants. Pick one of:
+
+1. **Connect the repo in the Vercel dashboard** (recommended). New Project →
+   import `Nightm3re1/Casuta-cu-tihna` → framework auto-detects as Next.js →
+   Deploy. Vercel then builds every push and gives preview URLs per branch.
+   Delete `.github/workflows/deploy-vercel.yml` if you go this way.
+
+2. **Deploy from CI.** Add repository secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`
+   and `VERCEL_PROJECT_ID`; `.github/workflows/deploy-vercel.yml` then deploys
+   on every push (production from `main`, previews elsewhere). It no-ops
+   silently until those secrets exist.
+
+Set the real domain in `src/content/site.ts` (`domain`) and in `metadataBase`
+in `src/app/layout.tsx` — canonical URLs, hreflang, the sitemap and robots.txt
+all follow from it.

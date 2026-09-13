@@ -214,7 +214,7 @@ function LocaleSwitch({ locale, dict, onLight }: { locale: Locale; dict: Dict; o
             aria-current={isActive ? 'true' : undefined}
             className={`rounded-full px-2.5 py-1.5 transition-colors duration-300 ${
               isActive
-                ? 'bg-clay-500 text-bark-950'
+                ? 'bg-clay-500 text-cream'
                 : onLight
                   ? 'text-bark-600 hover:text-bark-900'
                   : 'text-cream/70 hover:text-cream'

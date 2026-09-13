@@ -29,14 +29,14 @@ export default function Rates({ dict }: { dict: Dict }) {
                 <h3 className={`text-[0.7rem] font-semibold uppercase tracking-[0.16em] ${tier.featured ? 'text-clay-300' : 'text-clay-600'}`}>
                   {tier.name}
                 </h3>
-                <p className={`mt-1 text-xs ${tier.featured ? 'text-cream/70' : 'text-bark-500'}`}>{tier.period}</p>
+                <p className={`mt-1 text-xs ${tier.featured ? 'text-cream/70' : 'text-bark-600'}`}>{tier.period}</p>
                 <p className="mt-6 flex items-baseline gap-1.5">
                   <span className={`font-display text-4xl font-semibold leading-none ${tier.featured ? 'text-cream' : 'text-bark-900'}`}>
                     {tier.price}
                   </span>
-                  <span className={`text-xs ${tier.featured ? 'text-cream/70' : 'text-bark-500'}`}>{tier.unit}</span>
+                  <span className={`text-xs ${tier.featured ? 'text-cream/70' : 'text-bark-600'}`}>{tier.unit}</span>
                 </p>
-                <p className={`mt-auto pt-5 text-xs ${tier.featured ? 'text-cream/70' : 'text-bark-500'}`}>{tier.note}</p>
+                <p className={`mt-auto pt-5 text-xs ${tier.featured ? 'text-cream/70' : 'text-bark-600'}`}>{tier.note}</p>
               </Reveal>
             ))}
           </div>
@@ -58,13 +58,13 @@ export default function Rates({ dict }: { dict: Dict }) {
 
             <div className="mt-8 rounded-sm bg-cream p-6 ring-1 ring-stone">
               <a href="#book" className="btn-primary w-full">{dict.rates.cta}</a>
-              <p className="mt-3 text-center text-xs text-bark-500">{dict.rates.ctaNote}</p>
+              <p className="mt-3 text-center text-xs text-bark-600">{dict.rates.ctaNote}</p>
             </div>
           </Reveal>
         </div>
 
         <Reveal delay={120}>
-          <ul className="mt-12 grid gap-x-10 gap-y-2.5 border-t border-stone pt-7 text-[0.82rem] leading-relaxed text-bark-500 sm:grid-cols-2">
+          <ul className="mt-12 grid gap-x-10 gap-y-2.5 border-t border-stone pt-7 text-[0.82rem] leading-relaxed text-bark-600 sm:grid-cols-2">
             {dict.rates.fineprint.map((line) => (
               <li key={line}>{line}</li>
             ))}

@@ -33,7 +33,7 @@ export default function TheHouse({ dict, locale }: { dict: Dict; locale: Locale 
             <dl className="grid grid-cols-2 gap-x-10 gap-y-5 sm:grid-cols-3 lg:grid-cols-2">
               {dict.space.specs.map((s) => (
                 <div key={s.label} className="border-t border-stone pt-3">
-                  <dt className="text-[0.66rem] uppercase tracking-[0.16em] text-bark-500">{s.label}</dt>
+                  <dt className="text-[0.66rem] uppercase tracking-[0.16em] text-bark-600">{s.label}</dt>
                   <dd className="mt-1 font-display text-lg font-medium text-bark-900">{s.value}</dd>
                 </div>
               ))}

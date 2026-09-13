@@ -12,7 +12,7 @@ export default function TrustBar({ dict, locale }: { dict: Dict; locale: Locale 
             <span className="font-display text-4xl font-semibold leading-none text-bark-800">
               {reviewSummary.score.toFixed(1)}
             </span>
-            <span className="text-sm text-bark-500">/ {reviewSummary.outOf}</span>
+            <span className="text-sm text-bark-600">/ {reviewSummary.outOf}</span>
           </div>
           <div className="border-l border-stone pl-4">
             <div className="flex gap-0.5" role="img" aria-label={`${reviewSummary.score} / ${reviewSummary.outOf}`}>
@@ -27,7 +27,7 @@ export default function TrustBar({ dict, locale }: { dict: Dict; locale: Locale 
         </div>
 
         <div className="flex flex-wrap items-center gap-x-7 gap-y-3 md:justify-end">
-          <span className="text-xs uppercase tracking-[0.16em] text-bark-500">{dict.trust.intro}</span>
+          <span className="text-xs uppercase tracking-[0.16em] text-bark-600">{dict.trust.intro}</span>
           <a href={site.social.booking} target="_blank" rel="noopener noreferrer"
             className="text-sm font-semibold text-bark-700 underline-offset-4 transition-colors hover:text-clay-600 hover:underline">
             Booking.com

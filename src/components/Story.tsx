@@ -26,7 +26,7 @@ export default function Story({ dict, locale }: { dict: Dict; locale: Locale }) 
             <blockquote className="font-display text-xl leading-snug text-bark-900 md:text-2xl">
               “{dict.story.pull}”
             </blockquote>
-            <figcaption className="mt-3 text-xs uppercase tracking-[0.16em] text-bark-500">
+            <figcaption className="mt-3 text-xs uppercase tracking-[0.16em] text-bark-600">
               {dict.story.signature}
             </figcaption>
           </figure>
@@ -42,7 +42,7 @@ export default function Story({ dict, locale }: { dict: Dict; locale: Locale }) 
               <span className="block font-display text-3xl font-semibold leading-none text-clay-200">1923</span>
               <span className="mt-1.5 block text-[0.6rem] uppercase tracking-[0.2em] text-cream/60">Anno</span>
             </div>
-            <figcaption className="mt-9 max-w-xs text-sm leading-relaxed text-bark-500 md:ml-auto md:text-right">
+            <figcaption className="mt-9 max-w-xs text-sm leading-relaxed text-bark-600 md:ml-auto md:text-right">
               {dict.story.caption}
             </figcaption>
           </figure>

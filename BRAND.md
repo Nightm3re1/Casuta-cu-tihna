@@ -1,129 +1,73 @@
 # Brand — Căsuța cu Tihnă
 
-## Read this first
+The palette and typeface pairing below are **the brand's own**, read from the
+live casuta-cu-tihna.ro DOM rather than invented. If the owner ever publishes a
+formal brand guide that differs, this file is the one place to reconcile.
 
-The brief asked for the logo and colour palette **exactly as they appear on the
-Instagram account** (`@casuta_cu_tihna`). The build environment for this site had
-no network route to instagram.com, booking.com, or the existing
-casuta-cu-tihna.ro — all three are blocked by the network egress policy — so the
-official mark and its exact hex values **could not be read**.
+## Palette
 
-What is in the repository instead is a coherent identity derived from the
-property itself: Făgăraș spruce, 1923 oak timber, limewashed plaster, and the
-brass of old door furniture. It is deliberately built so that swapping in the
-real values is a small, contained edit rather than a redesign.
+Every colour resolves to a token in `tailwind.config.ts`. Values marked ◆ were
+sampled directly from production.
 
----
-
-## Swapping in the official palette
-
-Every colour on the site resolves to a token in **`tailwind.config.ts`**. Nothing
-else needs touching — no component hard-codes a hex value except the hero
-animation's scene fills, listed at the end.
-
-```ts
-colors: {
-  forest: { 50…950 },  // the dark ground: headers, dark sections, footer
-  oak:    { 100…700 }, // timber, warm mid-tones
-  brass:  { 300…600 }, // the accent — every primary CTA
-  ember:  '#B85C38',   // errors only
-  cream:  '#FAF6EE',   // page background
-  linen:  '#F1E9DA',   // alternating section background
-  stone:  '#D9CDB8',   // hairlines and borders
-  ink:    '#15120F',   // body text
-}
-```
-
-### Two rules to keep when you replace them
-
-1. **Keep the light/dark relationship.** `forest.900`/`forest.950` are backgrounds
-   that `cream` text sits on; `brass.500` is a button fill that `forest.950` text
-   sits on. Swap families wholesale, not individual steps.
-
-2. **Re-check contrast.** The current values pass WCAG AA everywhere, and getting
-   there required darkening `brass.600` from `#9E7430` to `#856026` — the lighter
-   value failed at 3.9:1 against cream for the small uppercase eyebrow labels. If
-   the official brass is lighter, either darken it for small text or raise those
-   labels above 18.66px.
-
-   Re-run the check after any palette change:
-
-   ```bash
-   npm run build && npx next start -p 3000 &
-   node <your-axe-script>   # see the audit script referenced in README
-   ```
-
-### Current values, for reference
-
-| Token | Hex | Used for |
+| Token | Hex | Role |
 |---|---|---|
-| `forest.950` | `#0A120E` | Booking section, footer |
-| `forest.900` | `#101C16` | Benefits, reviews |
-| `forest.800` | `#18271E` | Logo tile, year plate |
-| `brass.500` | `#BE8F3E` | Primary CTA fill |
-| `brass.600` | `#856026` | Eyebrow labels on light (AA-tuned) |
-| `brass.400`/`300` | `#D0A85E` / `#E0C287` | Accents on dark |
-| `cream` | `#FAF6EE` | Page background |
-| `linen` | `#F1E9DA` | Alternating sections |
-| `stone` | `#D9CDB8` | Hairlines |
-| `ink` | `#15120F` | Body text |
+| `clay.500` | `#7D5936` ◆ | The brand accent. Every primary CTA. |
+| `clay.700` | `#563C29` ◆ | Deep brown |
+| `clay.300` / `clay.200` | `#C4A078` / `#DFC9AB` | Accents on dark grounds |
+| `bark.900` | `#2E251F` ◆ | Primary text; dark sections |
+| `bark.600` | `#756357` ◆ | Muted body text |
+| `bark.200` | `#E7E1DA` ◆ | Borders and hairlines |
+| `cream` | `#FBFAF8` ◆ | Page background |
+| `linen` | `#F5F3EF` ◆ | Light surface / text on dark |
+| `sand` | `#F4F0EB` ◆ | Third surface |
 
----
+Two rules when changing them:
 
-## Swapping in the official logo
-
-The mark is drawn as inline SVG in **`src/components/Logo.tsx`** — a limewashed
-arch (the shape of the cottage's window and door heads) with the gable roofline
-and its round loft light set inside it.
-
-It is vector, inherits `currentColor`, and is used at every size from favicon to
-footer. **Replace only the `<svg>` body inside `LogoMark`** — every size, colour
-and layout decision lives outside that function, so nothing else breaks.
-
-Two other copies exist and should be updated to match:
-
-- `src/app/icon.svg` — favicon (the mark on a `forest.800` tile).
-- `src/app/[locale]/opengraph-image.tsx` — the social share card.
-
-If the official logo is a raster file, put it in `public/`, and in `Logo.tsx`
-swap the `<svg>` for `next/image`. Keep the `LogoMark`/`Logo` split so the
-wordmark lockup and its responsive behaviour survive.
-
----
+1. **Keep the light/dark relationship.** `bark.900`/`bark.950` are backgrounds
+   that `cream` text sits on; `clay.500` is a button fill that `cream` text sits
+   on. Swap families wholesale, not individual steps.
+2. **Re-check contrast.** The current values pass WCAG AA everywhere, and
+   getting there required moving small text off `bark.500` onto `bark.600`, and
+   putting `cream` rather than `bark.950` on the `clay.500` pill. Re-run the axe
+   audit after any palette change.
 
 ## Typography
 
-- **Display — Fraunces.** A high-contrast serif with genuine character in its
-  italics and terminals; carries the heritage of a 1923 house without looking
-  like a pastiche. Weights 400/500/600.
-- **Body — Inter.** Chosen for its Romanian diacritics: `ă â î ș ț` are correctly
-  drawn rather than composed, which many geometric sans faces get wrong.
-  Weights 400/500/600.
+- **Display — Playfair Display.** The face the brand already uses. Weights
+  400/500/600.
+- **Body — Inter.** Chosen for its Romanian diacritics: `ă â î ș ț` are properly
+  drawn rather than composed. Weights 400/500/600.
 
-Both are self-hosted through `next/font/google` (no request to Google at
-runtime), with `display: swap` and no layout shift — measured CLS is 0.000.
+Both self-hosted via `next/font/google` (no runtime request to Google), with
+`display: swap` and no layout shift — measured CLS is 0.000. Only those weights
+are loaded; **if you use a new weight in markup, add it to the font config in
+`src/app/[locale]/layout.tsx`** or the browser will synthesise it.
 
-Only the weights listed above are loaded. **If you use a new weight in markup,
-add it to the font config in `src/app/[locale]/layout.tsx`**, or the browser will
-synthesise it and it will look wrong.
+## The mark
 
----
+`src/components/Logo.tsx` draws a limewashed arch — the shape of the cottage's
+window and door heads — with the gable roofline and its round loft light inside
+it. It is vector, inherits `currentColor`, and is used from favicon to footer.
+
+Replace only the `<svg>` body inside `LogoMark`; every size, colour and layout
+decision lives outside that function. Two other copies should be kept in step:
+`src/app/icon.svg` (favicon) and `src/app/[locale]/opengraph-image.tsx` (share
+card).
+
+This mark was drawn for the site, not taken from the Instagram account — that
+account was unreachable from the build environment. If the owner has an official
+logo file, swapping it in is the one-file change described above.
 
 ## Hard-coded colours in the hero animation
 
 `src/components/HeroBuildAnimation.tsx` is a drawing, not UI, so its scene fills
-are literal values rather than tokens. If the palette changes substantially,
-these are the ones to revisit:
+are literal. If the palette changes substantially, revisit:
 
 | Constant / fill | Value | What it is |
 |---|---|---|
-| `INK` | `#C2E2CE` | Draughting lines |
-| `GUIDE` | `#6F9A83` | Grid, dimensions, title block |
-| `wallFill` | `#F3EADA` → `#D6C3A6` | Limewashed walls |
-| `roofFill` | `#3C3028` → `#221B16` | Roof |
+| `INK` | `#EADDC8` | Draughting lines |
+| `GUIDE` | `#A38B6B` | Grid, dimensions, title block |
+| `wallFill` | `#D2A264` → `#9C6E3A` | Honey log walls |
+| `roofFill` | `#2B221C` → `#171210` | Near-black shingle |
 | `glowFill` | `#FFDA8E` → `#DFA349` | Lit windows |
-| `ridgeFill` | `#2E3C3C` → `#16211C` | The Făgăraș behind |
-
-The same applies to the illustrated photo placeholders in
-`src/components/Photo.tsx` — though those disappear entirely once real
-photographs are dropped into `src/content/gallery.ts`.
+| `ridgeFill` | `#6E7480` → `#3A3B3C` | The Făgăraș behind |

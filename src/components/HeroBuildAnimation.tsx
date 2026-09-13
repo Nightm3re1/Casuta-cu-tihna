@@ -1,14 +1,7 @@
 'use client';
 
-import { useRef, type ReactNode } from 'react';
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from 'framer-motion';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { hold, seg, useScrollProgress } from '@/lib/useScrollProgress';
 
 /**
  * "The drawing becomes the house."
@@ -72,74 +65,102 @@ const ROOF_SLAB =
   `L ${G.roof.eaveR.x} ${G.roof.eaveR.y + G.roof.depth} L ${G.roof.apex.x} ${G.roof.apex.y + G.roof.depth} ` +
   `L ${G.roof.eaveL.x} ${G.roof.eaveL.y + G.roof.depth} Z`;
 
-/* Custom hooks — declared at module scope so the rules-of-hooks contract is
-   explicit. Each is called unconditionally, in a fixed order, exactly once. */
-const useStage = (p: MotionValue<number>, a: number, b: number) =>
-  useTransform(p, [a, b], [0, 1], { clamp: true });
-
-const useHold = (p: MotionValue<number>, a: number, b: number, c: number, d: number) =>
-  useTransform(p, [a, b, c, d], [0, 1, 1, 0], { clamp: true });
-
 /** Attributes that leave a path undrawn before hydration, avoiding a flash. */
 const undrawn = { pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 } as const;
 
 export default function HeroBuildAnimation({
   label,
-  overlay,
+  onProgress,
+  children,
 }: {
   label: string;
-  /** Receives the eased scroll progress so the headline can breathe with the build. */
-  overlay?: (progress: MotionValue<number>) => ReactNode;
+  /** Called on every frame with eased progress, so the headline can breathe with the build. */
+  onProgress?: (progress: number) => void;
+  /** Rendered inside the sticky frame, above the drawing. */
+  children?: ReactNode;
 }) {
   const track = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const [reduced, setReduced] = useState(false);
 
-  const { scrollYProgress } = useScroll({ target: track, offset: ['start start', 'end end'] });
-  // A light spring stops fast flicks from strobing.
-  const spring = useSpring(scrollYProgress, { stiffness: 140, damping: 34, restDelta: 0.0005 });
-  /**
-   * Reduced motion pins progress to the finished frame. Otherwise the build is
-   * compressed into the first `BUILD_SPAN` of the track, so the completed house
-   * is held on screen for the remainder rather than leaving the moment the last
-   * line is drawn.
-   */
-  const p = useTransform(() => (reduced ? 1 : Math.min(1, spring.get() / BUILD_SPAN)));
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduced(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
-  /* Draughting layers: fade in, hold, burn off. */
-  const gridO = useHold(p, -0.02, 0.0, 0.8, 0.9);
-  const titleO = useHold(p, 0.0, 0.05, 0.78, 0.88);
-  const dimsO = useHold(p, 0.08, 0.18, 0.78, 0.88);
-  /** Shared by every inked group — the moment the render takes over. */
-  const inkO = useTransform(p, [0.84, 0.95], [1, 0], { clamp: true });
+  /* Every animated node is addressed by ref and written to directly, so a
+     scroll never re-renders React. */
+  const gridR = useRef<SVGRectElement>(null);
+  const titleR = useRef<SVGGElement>(null);
+  const dimsR = useRef<SVGGElement>(null);
+  const ridgeR = useRef<SVGGElement>(null);
+  const renderR = useRef<SVGGElement>(null);
+  const lightsR = useRef<SVGGElement>(null);
+  const smokeR = useRef<SVGGElement>(null);
+  const skyR = useRef<HTMLDivElement>(null);
 
-  /* Construction sequence. */
-  const dGround = useStage(p, 0.05, 0.13);
-  const dFooting = useStage(p, 0.12, 0.24);
-  const dFrame = useStage(p, 0.2, 0.33);
-  const dCourses = useStage(p, 0.3, 0.45);
-  const dTruss = useStage(p, 0.42, 0.56);
-  const dRoof = useStage(p, 0.53, 0.67);
-  const dChimney = useStage(p, 0.63, 0.72);
-  const dOpenings = useStage(p, 0.68, 0.79);
-  const dTerrace = useStage(p, 0.75, 0.86);
+  /** Inked construction stages, in the order a builder would work. */
+  const inkR = useRef<(SVGPathElement | SVGLineElement | null)[]>([]);
+  const STAGES: [number, number][] = [
+    [0.05, 0.13], // ground line
+    [0.12, 0.24], // stone footing
+    [0.2, 0.33],  // sill plate and posts
+    [0.3, 0.45],  // log courses
+    [0.42, 0.56], // roof truss
+    [0.53, 0.67], // roof boarding
+    [0.63, 0.72], // chimney
+    [0.68, 0.79], // joinery
+    [0.75, 0.86], // terrace
+  ];
 
-  /* Resolve. */
-  const renderO = useStage(p, 0.84, 0.98);
-  const skyO = useStage(p, 0.82, 1.0);
-  const lightsO = useStage(p, 0.9, 1.0);
-  const smokeO = useStage(p, 0.92, 1.0);
-  const ridgeY = useTransform(p, [0.8, 1], [26, 0], { clamp: true });
-  /** Courses sit slightly back from the primary frame lines. */
-  const coursesO = useTransform(inkO, (v) => v * 0.85);
+  const apply = useCallback(
+    (raw: number) => {
+      // The build occupies the first BUILD_SPAN of the track; the rest holds
+      // the finished house on screen before it scrolls away.
+      const p = Math.min(1, raw / BUILD_SPAN);
+      const set = (el: Element | null, prop: string, value: string) => {
+        if (el) (el as HTMLElement).style.setProperty(prop, value);
+      };
+
+      const inkO = 1 - seg(p, 0.84, 0.95);
+      set(gridR.current, 'opacity', String(hold(p, -0.02, 0, 0.8, 0.9)));
+      set(titleR.current, 'opacity', String(hold(p, 0, 0.05, 0.78, 0.88)));
+      set(dimsR.current, 'opacity', String(hold(p, 0.08, 0.18, 0.78, 0.88)));
+
+      STAGES.forEach(([a, b], i) => {
+        const el = inkR.current[i];
+        if (!el) return;
+        el.style.strokeDashoffset = String(1 - seg(p, a, b));
+        // Courses sit slightly back from the primary frame lines.
+        el.style.opacity = String(i === 3 ? inkO * 0.85 : inkO);
+      });
+
+      const render = seg(p, 0.84, 0.98);
+      set(renderR.current, 'opacity', String(render));
+      set(ridgeR.current, 'opacity', String(render));
+      set(ridgeR.current, 'transform', `translateY(${(1 - seg(p, 0.8, 1)) * 26}px)`);
+      set(lightsR.current, 'opacity', String(seg(p, 0.9, 1)));
+      set(smokeR.current, 'opacity', String(seg(p, 0.92, 1)));
+      set(skyR.current, 'opacity', String(seg(p, 0.82, 1)));
+
+      onProgress?.(p);
+    },
+    [onProgress],
+  );
+
+  useScrollProgress(track, apply, { disabled: reduced });
 
   return (
     <div ref={track} className="relative h-[200vh] md:h-[220vh]">
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden bg-bark-950">
         {/* Cold draughting light warming to dusk as the render lands. */}
         <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_12%,#2E251F_0%,#1C1611_72%)]" />
-        <motion.div
-          className="absolute inset-0 bg-[linear-gradient(180deg,#3A3A3E_0%,#6B5540_36%,#9A6D42_56%,#5A422C_70%,#33291F_82%,#241C16_100%)]"
-          style={{ opacity: skyO }}
+        <div
+          ref={skyR}
+          className="absolute inset-0 bg-[linear-gradient(180deg,#33404E_0%,#7A6046_32%,#C2884A_52%,#8A5F33_66%,#3B3524_80%,#1D2417_100%)]"
+          style={{ opacity: 0 }}
         />
 
         <p className="sr-only">{label}</p>
@@ -156,20 +177,20 @@ export default function HeroBuildAnimation({
               <path d="M40 0H0V40" fill="none" stroke={GUIDE} strokeWidth="0.6" opacity="0.3" />
             </pattern>
             <linearGradient id="wallFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#F3EADA" />
-              <stop offset="100%" stopColor="#D6C3A6" />
+              <stop offset="0%" stopColor="#D2A264" />
+              <stop offset="100%" stopColor="#9C6E3A" />
             </linearGradient>
             <linearGradient id="roofFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#3C3028" />
-              <stop offset="100%" stopColor="#221B16" />
+              <stop offset="0%" stopColor="#2B221C" />
+              <stop offset="100%" stopColor="#171210" />
             </linearGradient>
             <linearGradient id="glowFill" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#FFDA8E" />
               <stop offset="100%" stopColor="#DFA349" />
             </linearGradient>
             <linearGradient id="ridgeFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#4A4640" />
-              <stop offset="100%" stopColor="#241E18" />
+              <stop offset="0%" stopColor="#6E7480" />
+              <stop offset="100%" stopColor="#3A3B3C" />
             </linearGradient>
             <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="10" />
@@ -177,14 +198,14 @@ export default function HeroBuildAnimation({
           </defs>
 
           {/* Draughting grid */}
-          <motion.rect width="1200" height="760" fill="url(#bpGrid)" style={{ opacity: gridO }} />
+          <rect ref={gridR} width="1200" height="760" fill="url(#bpGrid)" style={{ opacity: 0 }} />
 
           {/* The ridge behind, revealed with the render */}
-          <motion.g style={{ opacity: renderO, y: ridgeY }}>
+          <g ref={ridgeR} style={{ opacity: 0 }}>
             <path
               d="M0 470 L120 402 L206 442 L300 356 L392 424 L470 372 L560 430 L648 358 L742 418 L836 366 L930 432 L1024 388 L1120 440 L1200 404 L1200 620 L0 620 Z"
               fill="url(#ridgeFill)"
-              opacity="0.9"
+              opacity="0.72"
             />
             {/* snow on the high tops */}
             <path
@@ -192,12 +213,13 @@ export default function HeroBuildAnimation({
               fill="#DDE6E4"
               opacity="0.45"
             />
-          </motion.g>
+          </g>
 
           {/* Title block */}
-          <motion.g
+          <g
+            ref={titleR}
             className="hidden sm:block"
-            style={{ opacity: titleO }}
+            style={{ opacity: 0 }}
             fontFamily="ui-monospace, SFMono-Regular, monospace"
           >
             <rect x="52" y="640" width="336" height="74" fill="none" stroke={GUIDE} strokeWidth="1" opacity="0.75" />
@@ -205,10 +227,10 @@ export default function HeroBuildAnimation({
             <text x="66" y="661" fill={GUIDE} fontSize="15" letterSpacing="3.4">CĂSUȚA CU TIHNĂ</text>
             <text x="66" y="690" fill={GUIDE} fontSize="11.5" letterSpacing="2" opacity="0.85">PORUMBACU DE SUS · SIBIU</text>
             <text x="66" y="706" fill={GUIDE} fontSize="11.5" letterSpacing="2" opacity="0.85">ANNO 1923 · SC. 1:50</text>
-          </motion.g>
+          </g>
 
           {/* Dimension lines */}
-          <motion.g style={{ opacity: dimsO }} stroke={GUIDE} strokeWidth="1" fill="none"
+          <g ref={dimsR} style={{ opacity: 0 }} stroke={GUIDE} strokeWidth="1" fill="none"
             fontFamily="ui-monospace, SFMono-Regular, monospace">
             <line x1={G.body.x1} y1="648" x2={G.body.x2} y2="648" />
             <path d={`M${G.body.x1} 641 L${G.body.x1} 655 M${G.body.x2} 641 L${G.body.x2} 655`} />
@@ -216,29 +238,29 @@ export default function HeroBuildAnimation({
             <line x1="908" y1={G.roof.apex.y} x2="908" y2={G.ground} />
             <path d={`M901 ${G.roof.apex.y} L915 ${G.roof.apex.y} M901 ${G.ground} L915 ${G.ground}`} />
             <text x="924" y="382" fill={GUIDE} fontSize="13" stroke="none">6.80 m</text>
-          </motion.g>
+          </g>
 
           {/* ── Construction, in order of trade ─────────────────────────── */}
 
           {/* 1 · setting out */}
-          <motion.line
+          <line
             x1="60" y1={G.ground} x2="1140" y2={G.ground}
             stroke={INK} strokeWidth="2.5" strokeLinecap="round" {...undrawn}
-            style={{ pathLength: dGround, opacity: inkO }}
+            ref={(el) => { inkR.current[0] = el; }}
           />
 
           {/* 2 · stone footing */}
-          <motion.path
+          <path
             {...undrawn}
             d={`M${G.footing.x1} ${G.footing.bottom} L${G.footing.x1} ${G.footing.top} L${G.footing.x2} ${G.footing.top} L${G.footing.x2} ${G.footing.bottom} Z
                 M${G.footing.x1} 583 L${G.footing.x2} 583
                 M436 ${G.footing.top} L436 583 M540 583 L540 ${G.footing.bottom} M652 ${G.footing.top} L652 583 M756 583 L756 ${G.footing.bottom}`}
             fill="none" stroke={INK} strokeWidth="2.2" strokeLinejoin="round"
-            style={{ pathLength: dFooting, opacity: inkO }}
+            ref={(el) => { inkR.current[1] = el; }}
           />
 
           {/* 3 · sill plate and posts */}
-          <motion.path
+          <path
             {...undrawn}
             d={`M${G.body.x1} ${G.body.bottom} L${G.body.x2} ${G.body.bottom}
                 M${G.body.x1} ${G.body.bottom} L${G.body.x1} ${G.body.top}
@@ -246,51 +268,51 @@ export default function HeroBuildAnimation({
                 M600 ${G.body.bottom} L600 ${G.body.top}
                 M${G.body.x1} ${G.body.top} L${G.body.x2} ${G.body.top}`}
             fill="none" stroke={INK} strokeWidth="2.4" strokeLinecap="round"
-            style={{ pathLength: dFrame, opacity: inkO }}
+            ref={(el) => { inkR.current[2] = el; }}
           />
 
           {/* 4 · log courses */}
-          <motion.path
+          <path
             {...undrawn}
             d={G.courses.map((y) => `M${G.body.x1} ${y} L${G.body.x2} ${y}`).join(' ')}
             fill="none" stroke={INK} strokeWidth="1.5"
-            style={{ pathLength: dCourses, opacity: coursesO }}
+            ref={(el) => { inkR.current[3] = el; }}
           />
 
           {/* 5 · roof truss */}
-          <motion.path
+          <path
             {...undrawn}
             d={`${ROOF_LINE}
                 M420 305 L780 305
                 M${G.roof.apex.x} ${G.roof.apex.y} L${G.roof.apex.x} ${G.body.top}
                 M470 258 L${G.roof.apex.x} 258 M730 258 L${G.roof.apex.x} 258`}
             fill="none" stroke={INK} strokeWidth="2.4" strokeLinejoin="round" strokeLinecap="round"
-            style={{ pathLength: dTruss, opacity: inkO }}
+            ref={(el) => { inkR.current[4] = el; }}
           />
 
           {/* 6 · roof boarding */}
-          <motion.path
+          <path
             {...undrawn}
             d={`${ROOF_SLAB}
                 M400 245 L400 271 M470 205 L470 231 M540 165 L540 191
                 M660 165 L660 191 M730 205 L730 231 M800 245 L800 271`}
             fill="none" stroke={INK} strokeWidth="1.8" strokeLinejoin="round"
-            style={{ pathLength: dRoof, opacity: inkO }}
+            ref={(el) => { inkR.current[5] = el; }}
           />
 
           {/* 7 · chimney */}
-          <motion.path
+          <path
             {...undrawn}
             d={`M${G.chimney.x1} ${roofYAt(G.chimney.x1) + 24} L${G.chimney.x1} ${G.chimney.top}
                 L${G.chimney.x2} ${G.chimney.top} L${G.chimney.x2} ${roofYAt(G.chimney.x2) + 24}
                 M${G.chimney.x1 - 8} ${G.chimney.top} L${G.chimney.x1 - 8} ${G.chimney.top + 14}
                 L${G.chimney.x2 + 8} ${G.chimney.top + 14} L${G.chimney.x2 + 8} ${G.chimney.top} Z`}
             fill="none" stroke={INK} strokeWidth="2.2" strokeLinejoin="round"
-            style={{ pathLength: dChimney, opacity: inkO }}
+            ref={(el) => { inkR.current[6] = el; }}
           />
 
           {/* 8 · joinery */}
-          <motion.path
+          <path
             {...undrawn}
             d={`M${G.door.x1} ${G.door.bottom} L${G.door.x1} ${G.door.top} L${G.door.x2} ${G.door.top} L${G.door.x2} ${G.door.bottom}
                 M602 ${G.door.top} L602 ${G.door.bottom}
@@ -300,11 +322,11 @@ export default function HeroBuildAnimation({
                 M735 ${G.winR.top} L735 ${G.winR.bottom} M${G.winR.x1} 412 L${G.winR.x2} 412
                 M${G.gable.cx - G.gable.r} ${G.gable.cy} a ${G.gable.r} ${G.gable.r} 0 1 0 ${G.gable.r * 2} 0 a ${G.gable.r} ${G.gable.r} 0 1 0 ${-G.gable.r * 2} 0`}
             fill="none" stroke={INK} strokeWidth="2.2" strokeLinejoin="round"
-            style={{ pathLength: dOpenings, opacity: inkO }}
+            ref={(el) => { inkR.current[7] = el; }}
           />
 
           {/* 9 · terrace */}
-          <motion.path
+          <path
             {...undrawn}
             d={`M${G.terrace.x1} ${G.terrace.deckY} L${G.terrace.x2} ${G.terrace.deckY}
                 M${G.terrace.x1} ${G.terrace.deckY + 14} L${G.terrace.x2} ${G.terrace.deckY + 14}
@@ -314,11 +336,11 @@ export default function HeroBuildAnimation({
                 M${G.terrace.x1} ${G.terrace.deckY + 14} L${G.terrace.x1} ${G.ground}
                 M${G.terrace.x2} ${G.terrace.deckY + 14} L${G.terrace.x2} ${G.ground}`}
             fill="none" stroke={INK} strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round"
-            style={{ pathLength: dTerrace, opacity: inkO }}
+            ref={(el) => { inkR.current[8] = el; }}
           />
 
           {/* ══ The built house ══════════════════════════════════════════ */}
-          <motion.g style={{ opacity: renderO }}>
+          <g ref={renderR} style={{ opacity: 0 }}>
             {/* terrace — drawn before the shell so its roof tucks behind the wall */}
             <path
               d={`M${G.terrace.roofOuter.x} ${G.terrace.roofOuter.y} L${G.terrace.roofInner.x} ${G.terrace.roofInner.y}
@@ -345,20 +367,20 @@ export default function HeroBuildAnimation({
             <rect x={G.footing.x1} y={G.footing.top} width={G.footing.x2 - G.footing.x1} height={G.footing.bottom - G.footing.top} fill="#6C6860" />
             <rect x={G.body.x1} y={G.body.top} width={G.body.x2 - G.body.x1} height={G.body.bottom - G.body.top} fill="url(#wallFill)" />
             {G.courses.map((y) => (
-              <line key={y} x1={G.body.x1} y1={y} x2={G.body.x2} y2={y} stroke="#C3AC8D" strokeWidth="1.4" opacity="0.65" />
+              <line key={y} x1={G.body.x1} y1={y} x2={G.body.x2} y2={y} stroke="#7E5629" strokeWidth="1.6" opacity="0.55" />
             ))}
             <rect x={G.chimney.x1} y={G.chimney.top} width={G.chimney.x2 - G.chimney.x1} height={roofYAt(G.chimney.x2) + 24 - G.chimney.top} fill="#8A5F4A" />
             <rect x={G.chimney.x1 - 8} y={G.chimney.top} width={G.chimney.x2 - G.chimney.x1 + 16} height="14" fill="#6F4A38" />
             <path d={ROOF_SLAB} fill="url(#roofFill)" />
 
             {/* lit from inside */}
-            <motion.g style={{ opacity: lightsO }}>
+            <g ref={lightsR} style={{ opacity: 0 }}>
               <ellipse cx="465" cy="412" rx="90" ry="74" fill="#F0B95E" opacity="0.22" filter="url(#soft)" />
               <ellipse cx="735" cy="412" rx="90" ry="74" fill="#F0B95E" opacity="0.22" filter="url(#soft)" />
               <rect x={G.winL.x1} y={G.winL.top} width={G.winL.x2 - G.winL.x1} height={G.winL.bottom - G.winL.top} fill="url(#glowFill)" />
               <rect x={G.winR.x1} y={G.winR.top} width={G.winR.x2 - G.winR.x1} height={G.winR.bottom - G.winR.top} fill="url(#glowFill)" />
               <circle cx={G.gable.cx} cy={G.gable.cy} r={G.gable.r} fill="url(#glowFill)" opacity="0.88" />
-            </motion.g>
+            </g>
 
             {/* joinery */}
             <g stroke="#372C24" strokeWidth="3" fill="none">
@@ -371,19 +393,19 @@ export default function HeroBuildAnimation({
             <line x1="602" y1={G.door.top} x2="602" y2={G.door.bottom} stroke="#372C24" strokeWidth="2" />
 
             {/* ground */}
-            <path d={`M0 ${G.ground} L1200 ${G.ground} L1200 760 L0 760 Z`} fill="#241E18" />
-            <path d={`M0 ${G.ground} Q300 588 600 ${G.ground} T1200 ${G.ground} L1200 646 L0 646 Z`} fill="#33291F" />
+            <path d={`M0 ${G.ground} L1200 ${G.ground} L1200 760 L0 760 Z`} fill="#1D2417" />
+            <path d={`M0 ${G.ground} Q300 588 600 ${G.ground} T1200 ${G.ground} L1200 646 L0 646 Z`} fill="#2C3720" />
 
             {/* spruce, for scale */}
             {[{ x: 986, s: 1.15 }, { x: 1064, s: 0.85 }, { x: 1132, s: 1 }, { x: 60, s: 0.95 }].map((t) => (
               <g key={t.x} transform={`translate(${t.x} ${G.ground}) scale(${t.s})`}>
-                <path d="M0 0 L-26 0 L-14 -30 L-21 -30 L-9 -60 L-15 -60 L0 -96 L15 -60 L9 -60 L21 -30 L14 -30 L26 0 Z" fill="#1E1A14" />
+                <path d="M0 0 L-26 0 L-14 -30 L-21 -30 L-9 -60 L-15 -60 L0 -96 L15 -60 L9 -60 L21 -30 L14 -30 L26 0 Z" fill="#151C12" />
               </g>
             ))}
-          </motion.g>
+          </g>
 
           {/* Smoke — only once the fire is lit. */}
-          <motion.g style={{ opacity: smokeO }}>
+          <g ref={smokeR} style={{ opacity: 0 }}>
             {[0, 1, 2].map((i) => (
               <circle
                 key={i}
@@ -401,13 +423,13 @@ export default function HeroBuildAnimation({
                 }}
               />
             ))}
-          </motion.g>
+          </g>
         </svg>
 
         {/* Keeps the headline legible over whatever the animation is doing. */}
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(28,22,17,0.76)_0%,rgba(28,22,17,0.18)_38%,rgba(28,22,17,0.54)_76%,rgba(28,22,17,0.93)_100%)]" />
 
-        {overlay ? <div className="absolute inset-0">{overlay(p)}</div> : null}
+        {children}
       </div>
     </div>
   );
