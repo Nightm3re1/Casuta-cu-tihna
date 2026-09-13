@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { reviews, reviewSummary, hasPlaceholderReviews } from '@/content/reviews';
+import { reviews, reviewSummary } from '@/content/reviews';
 import type { Dict } from '@/content/schema';
 import type { Locale } from '@/content/site';
 
@@ -52,13 +52,6 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
   return (
     <section id="reviews" className="relative bg-forest-900 py-24 text-cream grain md:py-32" aria-labelledby="reviews-title">
       <div className="shell relative">
-        {hasPlaceholderReviews && process.env.NODE_ENV !== 'production' && (
-          <p className="mb-8 rounded-sm border border-amber-400/50 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
-            <strong className="font-semibold">Development notice:</strong> these reviews are placeholder
-            copy, not real guests. Replace them in <code className="font-mono">src/content/reviews.ts</code>{' '}
-            with the genuine Booking.com reviews before launch. This notice never renders in production.
-          </p>
-        )}
 
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div className="max-w-xl">

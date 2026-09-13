@@ -14,7 +14,6 @@ const COPY = {
     whatsapp: 'Întreabă pe WhatsApp',
     errDates: 'Alege și data de sosire, și data de plecare.',
     errOrder: 'Data de plecare trebuie să fie după data de sosire.',
-    errMin: `Sejurul minim este de ${site.minNights} nopți.`,
     nights: (n: number) => `${n} ${n === 1 ? 'noapte' : 'nopți'}`,
     waMsg: (a: string, b: string, g: number) =>
       `Bună! Aș dori să rezerv Căsuța cu Tihnă din ${a} până în ${b}, pentru ${g} persoane. Sunt libere datele?`,
@@ -30,7 +29,6 @@ const COPY = {
     whatsapp: 'Ask on WhatsApp',
     errDates: 'Please choose both an arrival and a departure date.',
     errOrder: 'The departure date must be after the arrival date.',
-    errMin: `The minimum stay is ${site.minNights} nights.`,
     nights: (n: number) => `${n} ${n === 1 ? 'night' : 'nights'}`,
     waMsg: (a: string, b: string, g: number) =>
       `Hello! I'd like to book Căsuța cu Tihnă from ${a} to ${b}, for ${g} guests. Are those dates free?`,
@@ -65,7 +63,6 @@ export default function BookingForm({ locale, tone = 'dark' }: { locale: Locale;
   const validate = () => {
     if (!from || !to) return t.errDates;
     if (nights <= 0) return t.errOrder;
-    if (nights < site.minNights) return t.errMin;
     return null;
   };
 

@@ -20,40 +20,42 @@ const config: Config = {
       '2xl': '1536px',
     },
     extend: {
+      /**
+       * The real brand palette, sampled from the owner's own live site
+       * (casuta-cu-tihna.ro) — warm oak, clay and limewash, not invented.
+       * The exact values pulled from production are marked ◆.
+       */
       colors: {
-        forest: {
-          50: '#F1F5F2',
-          100: '#DCE6DF',
-          200: '#B4C8BB',
-          300: '#84A390',
-          400: '#5A7A62',
-          500: '#3D5C48',
-          600: '#2E4737',
-          700: '#22362A',
-          800: '#18271E',
-          900: '#101C16',
-          950: '#0A120E',
+        // Dark warm neutral: body text and dark sections.
+        bark: {
+          50: '#F7F5F2',   // ◆ alternate surface
+          100: '#EFEAE3',
+          200: '#E7E1DA',  // ◆ borders and hairlines
+          300: '#CFC4B6',
+          400: '#A2917F',
+          500: '#8A7768',
+          600: '#756357',  // ◆ muted body text
+          700: '#544639',
+          800: '#3B3028',
+          900: '#2E251F',  // ◆ primary text
+          950: '#1C1611',
         },
-        oak: {
-          100: '#F0E3D2',
-          200: '#DFC7A6',
-          300: '#C9A374',
-          400: '#B0834D',
-          500: '#96683A',
-          600: '#7A522E',
-          700: '#5E3F24',
+        // The brand accent: aged oak / clay.
+        clay: {
+          100: '#F0E5D6',
+          200: '#DFC9AB',
+          300: '#C4A078',
+          400: '#A57C4E',
+          500: '#7D5936',  // ◆ brand accent — every primary CTA
+          600: '#66452A',
+          700: '#563C29',  // ◆ deep brown
         },
-        brass: {
-          300: '#E0C287',
-          400: '#D0A85E',
-          500: '#BE8F3E',
-          600: '#856026',
-        },
-        ember: '#B85C38',
-        cream: '#FAF6EE',
-        linen: '#F1E9DA',
-        stone: '#D9CDB8',
-        ink: '#15120F',
+        ember: '#A5432A',
+        cream: '#FBFAF8',  // ◆ page background
+        linen: '#F5F3EF',  // ◆ light surface / text on dark
+        sand: '#F4F0EB',   // ◆ third surface
+        stone: '#E7E1DA',  // ◆ border
+        ink: '#2E251F',    // ◆
       },
       fontFamily: {
         display: ['var(--font-display)', 'Georgia', 'serif'],

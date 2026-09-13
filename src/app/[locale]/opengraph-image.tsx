@@ -59,7 +59,7 @@ export default async function Image({ params }: { params: Promise<{ locale: stri
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 28, fontSize: 22, color: '#B4C8BB', fontFamily: 'monospace' }}>
-          {[`ANNO ${site.builtYear}`, `${site.surfaceSqm} M²`, `${site.maxGuests} ${locale === 'en' ? 'GUESTS' : 'OASPEȚI'}`, `${site.distances.sibiu} KM · SIBIU`].map((t, i) => (
+          {[`ANNO ${site.builtYear}`, `${site.surfaceSqm} M²`, `${site.maxGuests} ${locale === 'en' ? 'GUESTS' : 'OASPEȚI'}`, `${site.distances.sibiuCentre} KM · SIBIU`].map((t, i) => (
             <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
               {i > 0 && <span style={{ color: '#3D5C48' }}>·</span>}
               <span>{t}</span>

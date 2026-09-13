@@ -32,10 +32,6 @@ export default function TrustBar({ dict }: { dict: Dict }) {
             className="text-sm font-semibold text-forest-700 underline-offset-4 transition-colors hover:text-brass-600 hover:underline">
             Booking.com
           </a>
-          <a href={site.social.airbnb} target="_blank" rel="noopener noreferrer"
-            className="text-sm font-semibold text-forest-700 underline-offset-4 transition-colors hover:text-brass-600 hover:underline">
-            Airbnb
-          </a>
           <a href={site.social.instagram} target="_blank" rel="noopener noreferrer"
             className="text-sm font-semibold text-forest-700 underline-offset-4 transition-colors hover:text-brass-600 hover:underline">
             {site.social.instagramHandle}

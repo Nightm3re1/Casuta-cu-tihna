@@ -67,11 +67,6 @@ export default function Footer({ dict, locale }: { dict: Dict; locale: Locale })
                   Booking.com
                 </a>
               </li>
-              <li>
-                <a href={site.social.airbnb} target="_blank" rel="noopener noreferrer" className="text-cream/60 underline-offset-4 transition-colors hover:text-cream hover:underline">
-                  Airbnb
-                </a>
-              </li>
             </ul>
           </div>
         </div>

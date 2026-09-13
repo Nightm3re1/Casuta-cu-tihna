@@ -6,19 +6,14 @@ import { reviews, reviewSummary } from '@/content/reviews';
  * Structured data for the listing.
  *
  * Built from the same content modules the page renders, so the markup search
- * engines read can never drift from the markup people read.
- *
- * Note: aggregateRating and review are emitted only when the review data has
- * been marked as genuine (`placeholder: false`). Publishing placeholder ratings
- * as structured data would be a false claim to search engines, so the graph
- * simply omits them until real reviews are in place.
+ * engines read can never drift from the markup people read. The rating and the
+ * reviews are the real Booking.com figures — see src/content/reviews.ts.
  */
 export function buildJsonLd(locale: Locale) {
   const dict = getDict(locale);
   const url = `${site.domain}/${locale}`;
-  const realReviews = reviews.filter((r) => !r.placeholder);
 
-  const lodging: Record<string, unknown> = {
+  const lodging = {
     '@type': 'LodgingBusiness',
     '@id': `${site.domain}#lodging`,
     name: site.name,
@@ -26,42 +21,40 @@ export function buildJsonLd(locale: Locale) {
     url,
     telephone: site.contact.phone,
     email: site.contact.email,
-    priceRange: 'RON 450–690',
-    currenciesAccepted: 'RON',
+    priceRange: `RON ${site.rates.upTo2}–${site.rates.upTo4}`,
+    currenciesAccepted: site.rates.currency,
     numberOfRooms: site.bedrooms,
+    maximumAttendeeCapacity: site.maxGuests,
     petsAllowed: true,
     checkinTime: site.checkIn,
     checkoutTime: site.checkOut,
     address: {
       '@type': 'PostalAddress',
+      streetAddress: site.street,
       addressLocality: site.village,
+      postalCode: site.postalCode,
       addressRegion: site.county,
       addressCountry: site.country,
     },
     geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
-    sameAs: [site.social.instagram, site.social.booking, site.social.airbnb],
+    sameAs: [site.social.instagram, site.social.booking],
     amenityFeature: dict.amenities.groups.flatMap((g) =>
       g.items.map((item) => ({ '@type': 'LocationFeatureSpecification', name: item, value: true })),
     ),
-  };
-
-  if (!reviewSummary.placeholder) {
-    lodging.aggregateRating = {
+    aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: reviewSummary.score,
       bestRating: reviewSummary.outOf,
+      worstRating: 1,
       reviewCount: reviewSummary.count,
-    };
-  }
-
-  if (realReviews.length) {
-    lodging.review = realReviews.map((r) => ({
+    },
+    review: reviews.map((r) => ({
       '@type': 'Review',
       author: { '@type': 'Person', name: r.author },
-      reviewRating: { '@type': 'Rating', ratingValue: r.score, bestRating: 10 },
+      reviewRating: { '@type': 'Rating', ratingValue: r.score, bestRating: 10, worstRating: 1 },
       reviewBody: r.quote[locale],
-    }));
-  }
+    })),
+  };
 
   return {
     '@context': 'https://schema.org',

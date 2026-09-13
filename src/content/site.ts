@@ -1,49 +1,59 @@
 /**
- * Single source of truth for verifiable property facts and outbound links.
- * Everything here is rendered directly into the page and into JSON-LD, so
- * change it here and the whole site (and its structured data) follows.
+ * Single source of truth for the property's verifiable facts.
+ *
+ * Every value here was taken from the owner's own live site
+ * (casuta-cu-tihna.ro) or from the Booking.com listing — nothing is estimated.
+ * It is rendered straight into the page and into the JSON-LD, so a change here
+ * updates the whole site and its structured data together.
  */
 export const site = {
   name: 'Căsuța cu Tihnă',
   legalName: 'Căsuța cu Tihnă',
   domain: 'https://casuta-cu-tihna.ro',
   builtYear: 1923,
+  restoredYear: 2021,
+
+  street: 'Strada Principală nr. 489B',
   village: 'Porumbacu de Sus',
+  postalCode: '557192',
   county: 'Sibiu',
   region: 'Transilvania',
   country: 'RO',
-  countryName: { ro: 'România', en: 'Romania' },
-  // Village centre of Porumbacu de Sus, at the foot of the Făgăraș range.
   geo: { lat: 45.7167, lng: 24.4333 },
 
   surfaceSqm: 80,
   bedrooms: 1,
-  bathrooms: 2,
-  maxGuests: 7,
-  minNights: 2,
+  bathrooms: 2, // one on each floor
+  maxGuests: 4,
   checkIn: '15:00',
   checkOut: '11:00',
 
-  // Distances in km, measured by road.
+  /** Direct-booking rate for the whole house, in RON per night. */
+  rates: {
+    upTo2: 500,
+    upTo4: 700,
+    currency: 'RON',
+  },
+
+  /** Road distances in km, as published by the owner. */
   distances: {
-    sibiu: 40,
-    balea: 77,
-    fagarasRidgeTrailhead: 6,
-    airportSibiu: 45,
+    sibiuCentre: 38,
+    passageOfStairs: 39,
+    sibiuAirport: 42,
   },
 
   contact: {
-    phone: '+40 745 000 000',
-    phoneHref: 'tel:+40745000000',
-    whatsapp: 'https://wa.me/40745000000',
-    email: 'rezervari@casuta-cu-tihna.ro',
+    phone: '+40 735 751 636',
+    phoneHref: 'tel:+40735751636',
+    whatsapp: 'https://wa.me/40735751636',
+    email: 'contact@casuta-cu-tihna.ro',
   },
 
   social: {
     instagram: 'https://www.instagram.com/casuta_cu_tihna',
     instagramHandle: '@casuta_cu_tihna',
-    booking: 'https://www.booking.com/Share-DvYKzY',
-    airbnb: 'https://www.airbnb.com/rooms/1047545971723669463',
+    booking: 'https://www.booking.com/hotel/ro/little-bear-lodge.html',
+    bookingShare: 'https://www.booking.com/Share-DvYKzY',
   },
 } as const;
 
