@@ -2,41 +2,81 @@
   "exterior-fatada": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoQAAsAA4BaJZACdADL1YBSYQAA+/rq1KxlyradumEkTbM0XmjFMvWdhX4Bwy3in2FHgs7Lj+rmmAAA"
   },
   "exterior-lateral": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoQAAsAA4BaJYgCdAD0t1YdZoTAAP6Jgx6cgbRcY3vBja9W5NuMb/czZMDmukDKiTLslA1LXPiPFcAA"
   },
   "gradina": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAwAgCdASoQAAsAA4BaJbACdAEDyE9/FxKtAAD2uH1skI1zjUCbc3gtnt1oKN7IAVs02/s0RvS14ITjIgtXA0AA"
   },
   "living": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAAAQAgCdASoQAAsAA4BaJQBOgCHhiVsPWMGAAP6jeDHLfbht+9YsU0TVRYn+vdSHCTsLncoCpGwwidXKvV5XAAAA"
   },
   "dormitor": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoQAAsAA4BaJaACdACQ6o5qZAD+8X8RyB9djpXHCnfy5IV4iByedEy+uXPWDaDgrXP/yDNlwOr4El7GIAAAAA=="
   },
   "bucatarie": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAsAA4BaJYgCdAD0hV7CpQAA/uxYRJHRkNyIAdKydw0eKjdvRfi5omNbwWlJ4AA="
   },
   "baie": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoQAAsAA4BaJZgCdACNkOfAAP6r5LCyoukvyOQq7Afd9zMLx6jmuPgjxkuuLOfOJ6q0rW64ElY2oAAA"
   },
   "dus": {
     "width": 1536,
     "height": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
     "blurDataURL": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAACwAQCdASoQAAsAA4BaJQBOgBhvt2sAAP7c2BqtwKY5JSqDaqlDWMkm3iuWSf9iY7ZBZO8QAAA="
   }
 }
