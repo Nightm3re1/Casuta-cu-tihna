@@ -115,15 +115,17 @@ there is nowhere for a guest's details to sit.
 
 ## Running it on your own machine
 
-Requires Node 20.9+ (22 recommended).
+Requires Node 20.9 or newer; `.nvmrc` pins 22 for `nvm use`.
 
 ```bash
 git clone https://github.com/Nightm3re1/Casuta-cu-tihna.git
 cd Casuta-cu-tihna
 git checkout claude/casuta-cu-tihna-website-qd09li
 npm ci
-npm run dev            # http://localhost:3000
+npm run dev
 ```
+
+Then open http://localhost:3000.
 
 The photographs are committed, so there is nothing to fetch — it runs offline.
 `npm run photos` re-fetches them and needs `npm install --no-save sharp` first.
@@ -136,13 +138,13 @@ wants. Pick one of:
 1. **From your own machine, if you are already logged in** (fastest):
 
    ```bash
-   npm i -g vercel        # once
-   vercel login           # skip if already logged in
-   vercel                 # preview deploy, answers the setup prompts
-   vercel --prod          # promote to production
+   npx vercel login
+   npx vercel
+   npx vercel --prod
    ```
 
-   `vercel.json` sets the framework, so accept the detected defaults.
+   `vercel.json` sets the framework, so accept the detected defaults at the
+   prompts. `npx` avoids a global install; `npm i -g vercel` works too.
 
 2. **Connect the repo in the Vercel dashboard.** New Project → import
    `Nightm3re1/Casuta-cu-tihna` → framework auto-detects as Next.js → Deploy.
