@@ -62,6 +62,9 @@ async function main() {
     manifest[slug] = {
       width: meta.width ?? null,
       height: meta.height ?? null,
+      // Only the widths actually written, so the srcset can never point at a
+      // file that does not exist.
+      widths: WIDTHS.filter((w) => !meta.width || w <= meta.width),
       blurDataURL: `data:image/webp;base64,${lqip.toString('base64')}`,
     };
     console.log(`✓ ${slug}  ${meta.width}×${meta.height}`);

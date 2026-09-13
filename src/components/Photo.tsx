@@ -1,11 +1,10 @@
 import { photoMeta, type Slug } from '@/content/gallery';
 
-/** Widths emitted by scripts/fetch-photos.mjs. Keep in sync with that file. */
-const WIDTHS = [640, 1024, 1536];
 const DIR = '/images/property';
 
-const srcset = (slug: Slug, ext: 'avif' | 'webp') =>
-  WIDTHS.map((w) => `${DIR}/${slug}-${w}.${ext} ${w}w`).join(', ');
+/** Widths come from the manifest, so the srcset only ever lists real files. */
+const srcset = (slug: Slug, widths: number[], ext: 'avif' | 'webp') =>
+  widths.map((w) => `${DIR}/${slug}-${w}.${ext} ${w}w`).join(', ');
 
 /**
  * The property's photography.
@@ -35,14 +34,16 @@ export default function Photo({
   objectPosition?: string;
 }) {
   const meta = photoMeta(slug);
+  const widths = meta?.widths?.length ? meta.widths : [640, 1024];
+  const fallbackWidth = widths[Math.min(1, widths.length - 1)];
   const decorative = alt.trim() === '';
 
   return (
     <picture>
-      <source type="image/avif" srcSet={srcset(slug, 'avif')} sizes={sizes} />
-      <source type="image/webp" srcSet={srcset(slug, 'webp')} sizes={sizes} />
+      <source type="image/avif" srcSet={srcset(slug, widths, 'avif')} sizes={sizes} />
+      <source type="image/webp" srcSet={srcset(slug, widths, 'webp')} sizes={sizes} />
       <img
-        src={`${DIR}/${slug}-1024.webp`}
+        src={`${DIR}/${slug}-${fallbackWidth}.webp`}
         alt={alt}
         {...(decorative ? { 'aria-hidden': true } : {})}
         width={meta?.width ?? 1536}

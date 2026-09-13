@@ -26,7 +26,7 @@ export type Shot = {
   size: 'feature' | 'wide' | 'square';
 };
 
-type ManifestEntry = { width: number | null; height: number | null; blurDataURL: string };
+type ManifestEntry = { width: number | null; height: number | null; widths?: number[]; blurDataURL: string };
 const meta = manifest as Record<string, ManifestEntry>;
 
 export const photoMeta = (slug: Slug) => meta[slug];
