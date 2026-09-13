@@ -11,9 +11,21 @@
  * and commits the result, so the binaries enter the repo without ever being
  * hand-copied.
  */
-import { mkdir, writeFile, readFile, access } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import sharp from 'sharp';
+
+// sharp is a build-time-only tool for this script, so it is deliberately not a
+// dependency of the site. Load it lazily and say so plainly if it is missing.
+let sharp;
+try {
+  ({ default: sharp } = await import('sharp'));
+} catch {
+  console.error(
+    'This script needs sharp, which is not a dependency of the site.\n' +
+      'Install it just for this run:  npm install --no-save sharp',
+  );
+  process.exit(1);
+}
 
 const CDN = 'https://websites-images-prv.fra1.cdn.digitaloceanspaces.com/images_casuta-cu-tihna';
 const OUT = 'public/images/property';
@@ -32,8 +44,6 @@ const PHOTOS = {
 
 /** Widths emitted per photo. next/image picks from these via `sizes`. */
 const WIDTHS = [640, 1024, 1536];
-
-const exists = (p) => access(p).then(() => true, () => false);
 
 async function download(name) {
   const url = `${CDN}/${name}.webp`;

@@ -113,18 +113,44 @@ Booking.com listing as real query parameters, and the WhatsApp button
 pre-writes the same enquiry in the visitor's language. Both reach a human, and
 there is nowhere for a guest's details to sit.
 
+## Running it on your own machine
+
+Requires Node 20.9+ (22 recommended).
+
+```bash
+git clone https://github.com/Nightm3re1/Casuta-cu-tihna.git
+cd Casuta-cu-tihna
+git checkout claude/casuta-cu-tihna-website-qd09li
+npm ci
+npm run dev            # http://localhost:3000
+```
+
+The photographs are committed, so there is nothing to fetch — it runs offline.
+`npm run photos` re-fetches them and needs `npm install --no-save sharp` first.
+
 ## Deploying to Vercel
 
 `vercel.json` is in place with the caching and security headers this site
 wants. Pick one of:
 
-1. **Connect the repo in the Vercel dashboard** (recommended). New Project →
-   import `Nightm3re1/Casuta-cu-tihna` → framework auto-detects as Next.js →
-   Deploy. Vercel then builds every push and gives preview URLs per branch.
-   Nothing else to do — the CI deploy workflow is manual-only, so it will not
-   fire behind your back.
+1. **From your own machine, if you are already logged in** (fastest):
 
-2. **Deploy from CI instead.** Add repository secrets `VERCEL_TOKEN`,
+   ```bash
+   npm i -g vercel        # once
+   vercel login           # skip if already logged in
+   vercel                 # preview deploy, answers the setup prompts
+   vercel --prod          # promote to production
+   ```
+
+   `vercel.json` sets the framework, so accept the detected defaults.
+
+2. **Connect the repo in the Vercel dashboard.** New Project → import
+   `Nightm3re1/Casuta-cu-tihna` → framework auto-detects as Next.js → Deploy.
+   Vercel then builds every push and gives preview URLs per branch. Nothing
+   else to do — the CI deploy workflow is manual-only, so it will not fire
+   behind your back.
+
+3. **Deploy from CI instead.** Add repository secrets `VERCEL_TOKEN`,
    `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`, then run
    `.github/workflows/deploy-vercel.yml` from the Actions tab (tick
    *production* for a live deploy, leave it unticked for a preview). It is
