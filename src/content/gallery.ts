@@ -1,92 +1,108 @@
-/**
- * Photo slots for the house.
- *
- * ⚠  No real photography could be fetched (Booking.com and Instagram are
- *    unreachable from the build environment). Every slot below therefore has
- *    `src: null`, which renders a hand-drawn, on-brand SVG scene instead of an
- *    empty box — the layout is final and photo-ready.
- *
- *  To publish real photos:
- *    1. Drop the files into /public/images/gallery/ (JPG or WebP, ≥ 1600px wide).
- *    2. Set `src: '/images/gallery/<file>'` on the matching slot below.
- *    3. Keep the alt text, or improve it — it is read aloud by screen readers
- *       and indexed by search engines.
- */
+import manifest from '../../public/images/property/manifest.json';
 
-export type Scene = 'ridge' | 'cabin' | 'interior' | 'terrace' | 'stove' | 'orchard';
+/**
+ * The property's own photography.
+ *
+ * The files are fetched from the owner's CDN and committed by
+ * .github/workflows/fetch-photos.yml — see scripts/fetch-photos.mjs. Each slug
+ * has AVIF and WebP at 640/1024/1536, plus a blur placeholder in the manifest.
+ *
+ * Alt text follows the descriptions the owner wrote for their own site.
+ */
+export type Slug =
+  | 'exterior-fatada'
+  | 'exterior-lateral'
+  | 'gradina'
+  | 'living'
+  | 'dormitor'
+  | 'bucatarie'
+  | 'baie'
+  | 'dus';
 
 export type Shot = {
-  id: string;
-  /** null → renders the illustrated placeholder for `scene`. */
-  src: string | null;
-  scene: Scene;
+  id: Slug;
   alt: { ro: string; en: string };
-  /**
-   * Cell footprint in the gallery grid. The set below is chosen so the grid
-   * tiles exactly at both 2 and 4 columns, with no ragged edge or hole.
-   */
+  /** Cell footprint in the gallery grid — tiles exactly at 2 and 4 columns. */
   size: 'feature' | 'wide' | 'square';
 };
 
+type ManifestEntry = { width: number | null; height: number | null; blurDataURL: string };
+const meta = manifest as Record<string, ManifestEntry>;
+
+export const photoMeta = (slug: Slug) => meta[slug];
+
 export const gallery: Shot[] = [
   {
-    id: 'g1',
-    src: null,
-    scene: 'cabin',
+    id: 'exterior-fatada',
     alt: {
-      ro: 'Fațada căsuței din 1923, cu pereți văruiți și tâmplărie de lemn, văzută dinspre curte',
-      en: 'The 1923 cottage seen from the yard, limewashed walls and timber joinery',
+      ro: 'Fațada exterioară a căsuței din 1923, cu elemente tradiționale și detalii rustice',
+      en: 'The 1923 cottage’s front elevation, with traditional detailing and rustic timberwork',
     },
     size: 'feature',
   },
   {
-    id: 'g2',
-    src: null,
-    scene: 'ridge',
+    id: 'gradina',
     alt: {
-      ro: 'Creasta munților Făgăraș văzută de pe terasa casei, la răsărit',
-      en: 'The Făgăraș ridge seen from the terrace at sunrise',
+      ro: 'Grădina casei, cu elemente rustice și armonie naturală',
+      en: 'The garden, rustic and settled into its surroundings',
     },
     size: 'wide',
   },
   {
-    id: 'g3',
-    src: null,
-    scene: 'interior',
+    id: 'living',
     alt: {
-      ro: 'Camera mare, cu grinzile originale de stejar lăsate la vedere',
-      en: 'The main room, with the original oak beams left exposed',
+      ro: 'Living spațios cu mobilier rustic, șemineu și atmosferă caldă',
+      en: 'The spacious living room — rustic furniture, a fireplace and a warm atmosphere',
     },
     size: 'square',
   },
   {
-    id: 'g4',
-    src: null,
-    scene: 'terrace',
+    id: 'bucatarie',
     alt: {
-      ro: 'Terasa acoperită, cu masa lungă și barul de sub streașină',
-      en: 'The covered terrace, with the long table and the bar under the eaves',
+      ro: 'Bucătărie rustică complet utilată, cu plită electrică, cuptor și frigider',
+      en: 'The fully equipped rustic kitchen, with electric hob, oven and fridge',
     },
     size: 'square',
   },
   {
-    id: 'g5',
-    src: null,
-    scene: 'stove',
+    id: 'dormitor',
     alt: {
-      ro: 'Soba cu lemne din camera mare, aprinsă seara',
-      en: 'The wood stove in the main room, lit in the evening',
+      ro: 'Dormitorul principal de la etaj, cu pat matrimonial și mobilier rustic',
+      en: 'The main bedroom upstairs, with a double bed and rustic furniture',
     },
     size: 'wide',
   },
   {
-    id: 'g6',
-    src: null,
-    scene: 'orchard',
+    id: 'exterior-lateral',
     alt: {
-      ro: 'Grădina cu pomi fructiferi din spatele casei, în lumina de după-amiază',
-      en: 'The orchard garden behind the house in afternoon light',
+      ro: 'Vedere laterală a casei, cu detalii rustice și armonie naturală',
+      en: 'The cottage seen from the side, rustic detailing set against the landscape',
     },
     size: 'wide',
   },
 ];
+
+/** Shots used outside the main grid. */
+export const storyShot: Shot = {
+  id: 'living',
+  alt: {
+    ro: 'Livingul de la parter, cu șemineul și bârnele originale',
+    en: 'The ground-floor living room, with the fireplace and the original beams',
+  },
+  size: 'square',
+};
+
+export const ctaShot: Shot = {
+  id: 'gradina',
+  alt: { ro: '', en: '' },
+  size: 'wide',
+};
+
+export const areaShot: Shot = {
+  id: 'exterior-lateral',
+  alt: {
+    ro: 'Casa văzută dinspre grădină, cu creasta Făgărașului în fundal',
+    en: 'The cottage from the garden, with the Făgăraș ridge behind',
+  },
+  size: 'wide',
+};

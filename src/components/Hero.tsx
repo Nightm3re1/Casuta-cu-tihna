@@ -35,13 +35,13 @@ function Overlay({ dict, p }: { dict: Dict; p: MotionValue<number> }) {
         style={{ opacity: copyO, y: copyY }}
         className="shell absolute inset-0 flex flex-col items-center justify-center pb-24 pt-[var(--header-h)] text-center"
       >
-        <p className="eyebrow !text-brass-300">{dict.hero.eyebrow}</p>
+        <p className="eyebrow !text-clay-200">{dict.hero.eyebrow}</p>
         <h1
           id="hero-title"
           className="mt-4 max-w-3xl text-display-xl font-semibold text-cream text-shadow-hero"
         >
           {dict.hero.title}{' '}
-          <em className="not-italic text-brass-300">{dict.hero.titleAccent}</em>
+          <em className="not-italic text-clay-200">{dict.hero.titleAccent}</em>
         </h1>
         <p className="mt-5 max-w-lg text-[0.94rem] leading-relaxed text-cream/75 md:text-base">
           {dict.hero.lede}
@@ -68,7 +68,7 @@ function Overlay({ dict, p }: { dict: Dict; p: MotionValue<number> }) {
           {dict.hero.scrollHint}
         </span>
         <span className="relative block h-9 w-px overflow-hidden bg-cream/20">
-          <span className="absolute inset-x-0 top-0 h-3 animate-scroll-cue bg-brass-400" />
+          <span className="absolute inset-x-0 top-0 h-3 animate-scroll-cue bg-clay-300" />
         </span>
       </motion.div>
 

@@ -31,7 +31,7 @@ const PHOTOS = {
 };
 
 /** Widths emitted per photo. next/image picks from these via `sizes`. */
-const WIDTHS = [640, 1024, 1600];
+const WIDTHS = [640, 1024, 1536];
 
 const exists = (p) => access(p).then(() => true, () => false);
 

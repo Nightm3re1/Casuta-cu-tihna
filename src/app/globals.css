@@ -25,10 +25,10 @@
   h1, h2, h3, h4 { @apply font-display; text-wrap: balance; }
   p { text-wrap: pretty; }
 
-  ::selection { @apply bg-forest-800 text-cream; }
+  ::selection { @apply bg-clay-500 text-cream; }
 
   :focus-visible {
-    outline: 2px solid theme('colors.brass.500');
+    outline: 2px solid theme('colors.clay.500');
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -51,23 +51,23 @@
   }
 
   .eyebrow {
-    @apply text-eyebrow font-semibold uppercase text-brass-600;
+    @apply text-eyebrow font-semibold uppercase text-clay-600;
   }
 
-  /* Primary call to action — brass on forest, the site's single loudest element. */
+  /* Primary call to action — clay on cream, the site's single loudest element. */
   .btn {
     @apply relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5
            text-sm font-semibold tracking-wide transition-all duration-300 ease-smooth
            disabled:pointer-events-none disabled:opacity-60;
   }
   .btn-primary {
-    @apply btn bg-brass-500 text-forest-950 shadow-[0_1px_0_0_theme(colors.brass.300)_inset,0_10px_30px_-12px_rgba(190,143,62,0.75)]
-           hover:bg-brass-400 hover:-translate-y-0.5 hover:shadow-[0_1px_0_0_theme(colors.brass.300)_inset,0_18px_40px_-14px_rgba(190,143,62,0.85)]
+    @apply btn bg-clay-500 text-cream shadow-[0_10px_30px_-12px_rgba(125,89,54,0.55)]
+           hover:bg-clay-600 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-14px_rgba(125,89,54,0.6)]
            active:translate-y-0;
   }
   .btn-secondary {
-    @apply btn border border-forest-700/25 bg-transparent text-forest-800
-           hover:border-forest-700/60 hover:bg-forest-800 hover:text-cream hover:-translate-y-0.5;
+    @apply btn border border-bark-700/25 bg-transparent text-bark-800
+           hover:border-bark-700/60 hover:bg-bark-800 hover:text-cream hover:-translate-y-0.5;
   }
   .btn-ghost-light {
     @apply btn border border-cream/30 text-cream hover:border-cream/70 hover:bg-cream/10 hover:-translate-y-0.5;

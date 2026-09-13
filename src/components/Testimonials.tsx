@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { reviews, reviewSummary } from '@/content/reviews';
+import { reviews, reviewSummary, reviewCategories } from '@/content/reviews';
 import type { Dict } from '@/content/schema';
 import type { Locale } from '@/content/site';
 
@@ -50,12 +50,12 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
   const go = (delta: number) => scrollTo(Math.min(reviews.length - 1, Math.max(0, index + delta)));
 
   return (
-    <section id="reviews" className="relative bg-forest-900 py-24 text-cream grain md:py-32" aria-labelledby="reviews-title">
+    <section id="reviews" className="relative bg-bark-900 py-24 text-cream grain md:py-32" aria-labelledby="reviews-title">
       <div className="shell relative">
 
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div className="max-w-xl">
-            <p className="eyebrow !text-brass-400">{dict.reviews.eyebrow}</p>
+            <p className="eyebrow !text-clay-300">{dict.reviews.eyebrow}</p>
             <h2 id="reviews-title" className="mt-4 text-display-lg font-semibold">
               {dict.reviews.title}
             </h2>
@@ -68,7 +68,7 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
               onClick={() => go(-1)}
               disabled={index === 0}
               aria-label={dict.reviews.prev}
-              className="grid h-11 w-11 place-items-center rounded-full border border-cream/25 text-cream transition-all duration-300 hover:border-brass-400 hover:text-brass-300 disabled:opacity-30 disabled:hover:border-cream/25 disabled:hover:text-cream"
+              className="grid h-11 w-11 place-items-center rounded-full border border-cream/25 text-cream transition-all duration-300 hover:border-clay-300 hover:text-clay-200 disabled:opacity-30 disabled:hover:border-cream/25 disabled:hover:text-cream"
             >
               <Arrow dir="left" />
             </button>
@@ -77,7 +77,7 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
               onClick={() => go(1)}
               disabled={index === reviews.length - 1}
               aria-label={dict.reviews.next}
-              className="grid h-11 w-11 place-items-center rounded-full border border-cream/25 text-cream transition-all duration-300 hover:border-brass-400 hover:text-brass-300 disabled:opacity-30 disabled:hover:border-cream/25 disabled:hover:text-cream"
+              className="grid h-11 w-11 place-items-center rounded-full border border-cream/25 text-cream transition-all duration-300 hover:border-clay-300 hover:text-clay-200 disabled:opacity-30 disabled:hover:border-cream/25 disabled:hover:text-cream"
             >
               <Arrow dir="right" />
             </button>
@@ -86,12 +86,24 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
 
         {/* tabIndex makes the horizontal scroller reachable and arrow-key
             scrollable for keyboard users, which a bare overflow container is not. */}
+        <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-cream/12 py-6 sm:grid-cols-3 lg:grid-cols-6">
+          {reviewCategories.map((c) => (
+            <div key={c.key}>
+              <dt className="text-[0.68rem] uppercase tracking-[0.14em] text-cream/55">{c.label[locale]}</dt>
+              <dd className="mt-1 font-display text-2xl font-semibold text-clay-200">
+                {c.value.toLocaleString(locale === 'ro' ? 'ro-RO' : 'en-GB', { minimumFractionDigits: c.value % 1 ? 1 : 0 })}
+                <span className="ml-0.5 text-xs font-normal text-cream/45">/10</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+
         <div
           ref={scrollerRef}
           tabIndex={0}
           role="region"
           aria-label={dict.reviews.title}
-          className="-mx-6 mt-12 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-mx-6 mt-10 overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
         <ul
           ref={trackRef}
@@ -102,11 +114,11 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
               key={r.id}
               className="w-[85vw] shrink-0 snap-start sm:w-[420px]"
             >
-              <figure className="flex h-full flex-col rounded-sm border border-cream/12 bg-cream/[0.045] p-7 backdrop-blur-sm transition-colors duration-500 hover:border-brass-400/40">
+              <figure className="flex h-full flex-col rounded-sm border border-cream/12 bg-cream/[0.045] p-7 backdrop-blur-sm transition-colors duration-500 hover:border-clay-300/40">
                 <div className="flex items-center justify-between">
                   <div className="flex gap-0.5" role="img" aria-label={`${r.score} / 10`}>
                     {Array.from({ length: 5 }, (_, i) => (
-                      <svg key={i} width="13" height="13" viewBox="0 0 20 20" fill="currentColor" className="text-brass-400" aria-hidden="true">
+                      <svg key={i} width="13" height="13" viewBox="0 0 20 20" fill="currentColor" className="text-clay-300" aria-hidden="true">
                         <path d="M10 1.5l2.6 5.3 5.9.85-4.25 4.15 1 5.85L10 14.9l-5.25 2.75 1-5.85L1.5 7.65l5.9-.85L10 1.5z" />
                       </svg>
                     ))}
@@ -119,7 +131,7 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
                 </blockquote>
 
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-cream/10 pt-5">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brass-500/15 font-display text-base font-semibold text-brass-300">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-clay-500/15 font-display text-base font-semibold text-clay-200">
                     {r.author.charAt(0)}
                   </span>
                   <span className="min-w-0">
@@ -145,7 +157,7 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
                 aria-label={`${dict.reviews.goTo} ${i + 1}`}
                 onClick={() => scrollTo(i)}
                 className={`h-1.5 rounded-full transition-all duration-400 ease-smooth ${
-                  i === index ? 'w-8 bg-brass-400' : 'w-1.5 bg-cream/25 hover:bg-cream/50'
+                  i === index ? 'w-8 bg-clay-300' : 'w-1.5 bg-cream/25 hover:bg-cream/50'
                 }`}
               />
             ))}
@@ -154,7 +166,7 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
             href={reviewSummary.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-cream/70 underline-offset-4 transition-colors hover:text-brass-300 hover:underline"
+            className="text-sm text-cream/70 underline-offset-4 transition-colors hover:text-clay-200 hover:underline"
           >
             {dict.reviews.sourceLabel}: {reviewSummary.source} →
           </a>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Fraunces, Inter } from 'next/font/google';
+import { Playfair_Display, Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -7,7 +7,7 @@ import StickyBookBar from '@/components/StickyBookBar';
 import { getDict, isLocale } from '@/lib/i18n';
 import { locales, site, type Locale } from '@/content/site';
 
-const display = Fraunces({
+const display = Playfair_Display({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--font-display',
@@ -90,7 +90,7 @@ export default async function LocaleLayout({
       <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-forest-900 focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-cream"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-bark-900 focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-cream"
         >
           {dict.skipToContent}
         </a>

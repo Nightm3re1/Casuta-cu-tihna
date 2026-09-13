@@ -4,7 +4,7 @@ export const en: Dict = {
   meta: {
     title: 'Căsuța cu Tihnă — a restored 1923 cottage below the Făgăraș ridge, Transylvania',
     description:
-      'A whole cottage to yourself, restored from 1923, on the quiet edge of Porumbacu de Sus. 80 m², sleeps 7, two bathrooms, a terrace facing the Făgăraș ridge. Book direct.',
+      'A 1923 log cottage restored in 2021, at the foot of the Făgăraș mountains. 80 m², sleeps 4, two bathrooms, a terrace facing the peaks. Rated 9.9 on Booking. Book direct, no commission.',
     ogAlt: 'Căsuța cu Tihnă — restored traditional cottage at the foot of the Făgăraș mountains',
   },
 
@@ -25,7 +25,7 @@ export const en: Dict = {
     title: 'Since 1923, this house has done one thing well:',
     titleAccent: 'it leaves you alone.',
     lede:
-      'A stand-alone cottage, rebuilt beam by beam, on a dead-end lane at the edge of the village. 80 m², seven beds, two bathrooms, and the whole ridge from the terrace.',
+      'A stand-alone log cottage, restored in 2021 without changing its nature. 80 m² over two floors, up to 4 guests, two bathrooms, and the whole Făgăraș ridge from the terrace.',
     ctaPrimary: 'See open dates',
     ctaSecondary: 'Take the tour',
     scrollHint: 'Scroll — it builds',
@@ -34,74 +34,74 @@ export const en: Dict = {
     stats: [
       { value: '1923', label: 'carved in the beam' },
       { value: '80 m²', label: 'entirely yours' },
-      { value: '7', label: 'beds' },
-      { value: '40 km', label: 'to Sibiu' },
+      { value: '4', label: 'guests' },
+      { value: '9.9', label: 'on Booking · 52 reviews' },
     ],
   },
 
   trust: {
     intro: 'Also find us on',
-    ratingLabel: 'Guest rating',
-    items: ['Book direct, no platform fee', 'Host replies the same day', 'Free cancellation up to 14 days out'],
+    ratingLabel: 'reviews on Booking',
+    items: ['Book direct, no platform fee', 'A personal reply from the host within 24 hours', 'Reception open around the clock'],
   },
 
   story: {
     eyebrow: 'The story',
     title: 'We bought an old house and left its age showing.',
     body: [
-      'The first time we walked in, the house was a hundred years old and had exactly one stove that still drew. The beams were sound. The stone footing was sound. Everything else was not.',
-      'We rebuilt it slowly, with craftsmen from the village. The original oak beams stayed; we cleaned them by hand until the year cut into the wood showed again. The walls are slaked lime, not paint — which is why the house smells like a house and not like a renovation. We added warm floors, two proper bathrooms, and a kitchen you can actually cook in rather than just reheat in.',
-      'What we left out: a television in every room, a jacuzzi with coloured lights, background music. Here, the view out of the window is the entertainment.',
+      'It was raised in 1923 by craftsmen from the village, who worked the timber by hand and carved every beam. It was a family home for several generations — a witness to a vanished way of life in old Transylvania.',
+      'In 2021 we restored it under a single rule: keep the spirit of the place. Every beam was cleaned and treated, not replaced. We added only the comfort a stay needs — heating, two bathrooms (one on each floor), a fully equipped kitchen — and no ostentatious modernity.',
+      'What we left out: anything that would cover the quiet. One guest wrote that all you hear are the birds and the bees. That is exactly what we wanted to keep.',
     ],
-    pull: 'We didn’t modernise the house. We only made it work again.',
+    pull: 'Keeping the original beams was not an aesthetic decision — it was a tribute to the craftsmen who built this house a century ago.',
     signature: 'Your hosts, Porumbacu de Sus',
-    caption: 'The original beams, cleaned by hand — 1923 is still legible on the joist in the main room.',
+    caption: 'The ground-floor living room, with the fireplace and the original beams cleaned by hand in 2021.',
   },
 
   benefits: {
     eyebrow: 'Why here',
-    title: 'The details that actually matter when there are seven of you.',
-    lede: 'We don’t promise “unique experiences”. We promise things you can count before you book.',
+    title: 'The things guests come back for.',
+    lede: 'We are not inventing arguments. These are the themes that recur across all 52 reviews on Booking.com.',
     items: [
       {
-        title: 'The whole house, only yours',
-        body: 'Your own yard, your own gate, your own key. You share nothing with anyone — not the hallway, not the grill, not the quiet.',
-      },
-      {
-        title: 'Two bathrooms, not one',
-        body: 'The reason seven people can leave for the mountain in the morning without falling out. Both with unlimited hot water.',
-      },
-      {
         title: 'The ridge, straight off the terrace',
-        body: 'The terrace faces south, into the Făgăraș. Mornings you get Șerbota peak. Evenings you get a sky with no town light in it.',
+        body: 'Almost every review mentions the view. The terrace faces the Făgăraș mountains, and in the morning the sun comes straight into the kitchen.',
       },
       {
-        title: 'A kitchen for cooking, not for show',
-        body: 'Hob, oven, a big fridge, a dishwasher, knives that cut. The village shop is 400 metres down the lane.',
+        title: 'A quiet you can actually hear',
+        body: '“Only the birds and the bees break the silence of the day.” We are on the edge of the village, down a side street, with a fenced yard and complete privacy.',
       },
       {
-        title: 'Grill and bar in the yard',
-        body: 'A masonry grill, a long table in the shade, and a bar under the eaves for the evenings when nobody wants to go indoors.',
+        title: 'Cleanliness, 10 out of 10',
+        body: 'That is not a figure of speech. It is the exact score guests give us for cleanliness, across 52 reviews.',
       },
       {
-        title: 'Free parking, inside the gate',
-        body: 'Drive in and leave the car there. Room for two cars, behind a fence that closes.',
+        title: 'Two bathrooms, one per floor',
+        body: 'One downstairs, one upstairs. For four people who all want to leave for the mountain at the same time, that changes everything.',
+      },
+      {
+        title: 'Breakfast in a picnic basket',
+        body: 'On request we make breakfast, lunch or dinner. Breakfast arrives in a basket, generous and built from local produce — the most praised thing here after the view.',
+      },
+      {
+        title: 'You talk to the host, directly',
+        body: 'Staff: 10 out of 10 on Booking. No reception desk, no middleman — a personal reply, usually within a few hours.',
       },
     ],
   },
 
   space: {
     eyebrow: 'The house',
-    title: 'Eighty square metres, divided the way they should be.',
+    title: 'Eighty square metres, over two floors.',
     lede:
-      'One bedroom with a double bed, a large main room that takes the rest of the group, two full bathrooms, and a kitchen open to a table for ten.',
+      'Downstairs: the fully equipped kitchen, the living room with its fireplace, and a bathroom. Upstairs: the bedroom with a double bed and the second bathroom. That is all — and exactly enough.',
     specs: [
-      { label: 'Floor area', value: '80 m²' },
-      { label: 'Guests', value: 'up to 7' },
-      { label: 'Bedroom', value: '1 + sleeping space in the main room' },
-      { label: 'Bathrooms', value: '2, both with showers' },
-      { label: 'Heating', value: 'central + wood stove' },
-      { label: 'Wi-Fi', value: 'fibre, throughout' },
+      { label: 'Floor area', value: '~80 m²' },
+      { label: 'Guests', value: 'up to 4' },
+      { label: 'Bedroom', value: '1, upstairs' },
+      { label: 'Bathrooms', value: '2 — one per floor' },
+      { label: 'Heating', value: 'fireplace in the living room' },
+      { label: 'Wi-Fi', value: 'free, throughout' },
     ],
     galleryCta: 'See all photographs',
   },
@@ -112,59 +112,59 @@ export const en: Dict = {
     lede: 'The full list, written down before you book — not after you arrive.',
     groups: [
       {
-        title: 'Kitchen & table',
-        items: ['Hob and oven', 'Large fridge-freezer', 'Dishwasher', 'Espresso machine and filter coffee', 'Crockery, cutlery and glasses for 8', 'Table seating 10'],
+        title: 'Kitchen & coffee',
+        items: ['Electric hob', 'Oven', 'Fridge', 'Nespresso machine with free capsules', 'Kettle and toaster', 'Fully equipped kitchen'],
+      },
+      {
+        title: 'Living & bedroom',
+        items: ['Fireplace', 'Satellite TV', 'Sofa', 'Comfortable double bed', 'Quality linen included', 'Towels and bathroom products'],
       },
       {
         title: 'Yard & terrace',
-        items: ['Covered terrace facing the Făgăraș', 'Masonry grill', 'Outdoor bar under the eaves', 'Orchard garden', 'Outdoor furniture', 'Campfire (on request)'],
+        items: ['Terrace facing the Făgăraș', 'Barbecue area, wood and charcoal included', 'Outdoor bar', 'Garden and generous yard', 'Free private parking', 'Fenced yard, complete privacy'],
       },
       {
-        title: 'Comfort',
-        items: ['Central heating throughout', 'Wood stove in the main room', 'Firewood included', 'Fibre-optic Wi-Fi', 'Washing machine', 'Linen and towels included'],
-      },
-      {
-        title: 'Practical',
-        items: ['Free private parking in the yard', 'Gated, fully fenced yard', 'Completely separate entrance', 'First-aid kit', 'Smoke detector', 'Hangers, hairdryer, iron'],
+        title: 'Practical & activities',
+        items: ['Free Wi-Fi', 'Reception open around the clock', 'Free bicycles', 'Badminton equipment', 'Breakfast, lunch and dinner on request', 'Completely separate entrance'],
       },
     ],
-    note: 'Dogs are welcome if you tell us in advance. We don’t charge for them.',
+    note: 'For pets or any special requirement, talk to the host directly — booking direct is what makes tailored arrangements possible.',
   },
 
   area: {
     eyebrow: 'Nearby',
     title: 'What there is to do, if you want to do anything.',
-    lede: 'We sit at kilometre zero of the Făgăraș. Every distance below is by road, measured from the gate.',
+    lede: 'We sit at the foot of the Făgăraș, between the Transfăgărășan and the Transalpina. Distances below are by road.',
     items: [
       {
-        name: 'Transfăgărășan & Bâlea Lake',
-        distance: '77 km',
-        body: 'The most spectacular road in the country, under two hours away. The glacial lake sits at 2,034 m. The high section opens in summer, usually June to late October.',
-      },
-      {
-        name: 'Bâlea Waterfall',
-        distance: '62 km',
-        body: 'A 65-metre drop at the head of the valley. Reachable by cable car even when the high road is shut.',
-      },
-      {
-        name: 'Trailhead to the ridge',
-        distance: '6 km',
-        body: 'The nearest waymarked start. From here you climb towards Șerbota and Negoiu — one long, clear day on the mountain.',
+        name: 'Hiking and cycling',
+        distance: 'from the gate',
+        body: 'Mountain trails start close by, and the bicycles are included. For lazier days there is badminton equipment in the yard.',
       },
       {
         name: 'Sibiu old town',
-        distance: '40 km',
-        body: 'The Great Square, the Passage of Stairs, the Bridge of Lies. Forty minutes on the DN1 if you leave in the morning.',
+        distance: '38 km',
+        body: 'The Great Square is 38 km away and the Passage of Stairs 39. Sibiu airport is 42 km — useful if you are flying in.',
       },
       {
-        name: 'Badea Cârțan Museum',
-        distance: '9 km',
-        body: 'The house of the shepherd who walked to Rome. The best hour you can spend around here in bad weather.',
+        name: 'The Clay Castle',
+        distance: 'Valea Zânelor',
+        body: 'A traditional Romanian restaurant in one of the most spectacular settings in the country. Entry is by reservation only.',
       },
       {
-        name: 'The marble quarry',
-        distance: '5 km',
-        body: 'Porumbacu’s white marble comes out of the mountain just above the village. You can see the cut from the terrace on a clear day.',
+        name: 'The Story of the Calendar',
+        distance: 'nearby',
+        body: 'A surprisingly good exhibition on the history of the calendar. The best hour you can spend around here in bad weather.',
+      },
+      {
+        name: 'The Upside-Down House & deer farm',
+        distance: 'nearby',
+        body: 'The Upside-Down House is unique in Romania. The deer farm is worth it especially with children — you can feed the animals.',
+      },
+      {
+        name: 'Panoramic Park',
+        distance: 'nearby',
+        body: 'An adventure park with views towards the ridge. Good for an active afternoon without going far from the house.',
       },
     ],
   },
@@ -182,30 +182,31 @@ export const en: Dict = {
 
   rates: {
     eyebrow: 'Rates',
-    title: 'One price per night, for the whole house.',
-    lede: 'We don’t charge per person. Seven people pay what two would — which is why the house makes sense for groups and families.',
+    title: 'One price, for the whole house.',
+    lede:
+      'The best rate is always direct with the host. Platforms add 15–25% in commission — booking direct keeps the price honest.',
     tiers: [
-      { name: 'Weekdays', period: 'Sunday – Thursday', price: '450', unit: 'RON / night', note: '2 nights minimum' },
-      { name: 'Weekend', period: 'Friday & Saturday', price: '590', unit: 'RON / night', note: '2 nights minimum', featured: true },
-      { name: 'Holidays', period: 'Christmas, New Year, Easter', price: '690', unit: 'RON / night', note: '3 nights minimum' },
+      { name: 'Up to 2 guests', period: 'the whole house, exclusively', price: '500', unit: 'RON / night', note: 'ideal for couples' },
+      { name: 'Up to 4 guests', period: 'the whole house, exclusively', price: '700', unit: 'RON / night', note: 'maximum capacity', featured: true },
+      { name: 'Meals on request', period: 'arranged in advance', price: '—', unit: 'breakfast · lunch · dinner', note: 'priced with the host' },
     ],
     includedTitle: 'Always included',
     included: [
       'The whole house and yard, exclusively',
       'Linen, towels and bathroom products',
-      'Firewood for the stove and the grill',
-      'Private parking for two cars',
-      'Fibre Wi-Fi',
-      'Final cleaning',
+      'Wood and charcoal for the barbecue',
+      'Free private parking',
+      'Wi-Fi and bicycles',
+      'Nespresso coffee capsules',
     ],
     fineprint: [
-      'Check-in from 15:00, check-out by 11:00. We flex when we can.',
-      'Free cancellation up to 14 days before arrival.',
-      'A 300 RON deposit, returned in full on departure.',
-      'Rates can vary in peak season and over public holidays.',
+      'Check-in from 15:00, check-out by 11:00. Early check-in or late check-out can be arranged directly with the host.',
+      'The cancellation policy is agreed directly with the host when you book — booking direct gives you more flexibility.',
+      'No platform fees and no hidden costs.',
+      'For pets or special occasions, contact the host directly.',
     ],
     cta: 'Check your dates',
-    ctaNote: 'We reply the same day, usually within a few hours.',
+    ctaNote: 'You get a personal reply from the host within 24 hours.',
   },
 
   faq: {
@@ -214,36 +215,36 @@ export const en: Dict = {
     lede: 'If the answer isn’t here, write to us. No question is too small.',
     items: [
       {
-        q: 'Do seven people really fit comfortably?',
-        a: 'Yes, but let’s be precise: one bedroom with a double bed, and the remaining beds in the large main room. They’re comfortable, but they aren’t separate rooms. For seven adults who don’t know each other well, it will feel tight. For two families or a group of friends, it’s exactly right.',
+        q: 'How many people actually fit?',
+        a: 'Four, and let’s be precise: a bedroom with a double bed upstairs, plus sleeping space in the ground-floor living room. For a couple it is generous; for two couples or a family of four it is exactly right. We don’t take more than four — we would rather say no than cram you in.',
       },
       {
-        q: 'Can I get here in a small car?',
-        a: 'Yes. The road is paved all the way to the gate, including the village lane. In winter we clear the last stretch ourselves. You don’t need a 4x4 in any season.',
+        q: 'Are there really two bathrooms?',
+        a: 'Yes — one downstairs and one upstairs, both modern, with towels and bathroom products included. It is the detail guests notice most often after the view.',
       },
       {
-        q: 'What about signal and internet?',
-        a: 'Fibre-optic internet throughout the house, good enough for video calls. Solid mobile coverage on every network. You could work from here for a week without trouble.',
+        q: 'How do meals work?',
+        a: 'On request we prepare breakfast, lunch or dinner to suit you. Breakfast arrives in a picnic basket and is built from local produce. It needs arranging with the host beforehand — tell us your preferences and any allergies in good time.',
       },
       {
-        q: 'Can I bring my dog?',
-        a: 'Yes, and it costs nothing extra. Just tell us in advance what kind of dog so we can prepare the yard. The gate closes and the yard is fully fenced.',
+        q: 'Is it easy to reach by car?',
+        a: 'Yes. We are on the edge of the village, down a quiet side street, with free private parking inside the yard. Precise directions are sent once your booking is confirmed.',
+      },
+      {
+        q: 'What about the internet?',
+        a: 'Free Wi-Fi throughout the house and satellite TV in the living room. Reception is open around the clock, so if something comes up at two in the morning you can still reach us.',
       },
       {
         q: 'What if the Transfăgărășan is closed?',
-        a: 'From November to June the high section is shut — but Bâlea Waterfall stays reachable by cable car, and Sibiu is forty minutes away. In winter, most of our guests come for precisely that: the stove, the snow, and nothing to do.',
+        a: 'From November to June the high section is shut — but Sibiu is 38 km away, the Clay Castle is worth it in any season, and in winter most of our guests come for precisely this: the fireplace, the snow, and nothing to do.',
       },
       {
-        q: 'Are there shops or restaurants nearby?',
-        a: 'A village shop 400 metres away, open daily. For a proper shop, there’s a supermarket in Avrig, 12 km off. Good restaurants in Cârța and Avrig; our recommendations are waiting on the table, handwritten.',
-      },
-      {
-        q: 'Can I check in late?',
-        a: 'Yes. We hand over the key in person, but if you arrive at one in the morning we’ll sort it out with a key safe. Just tell us roughly when, the day before.',
+        q: 'What is the cancellation policy?',
+        a: 'It is agreed directly with the host when you book. Precisely because we are not going through a platform, we have room to be flexible — tell us the situation and we will find a solution.',
       },
       {
         q: 'Why book direct rather than through a platform?',
-        a: 'Because the price is the same, but we pay no commission — so we have room to move on longer stays, a late check-out, or a basket of things from the neighbours on the day you arrive. And because you get us, not a system.',
+        a: 'Platforms add 15–25% in commission, and somebody pays it — you or your host. Booking direct you pay the honest price, you speak to the person who opens the door, and you get personal recommendations rather than a standardised experience.',
       },
     ],
     stillAsking: 'Still have a question?',
@@ -257,7 +258,7 @@ export const en: Dict = {
       'The house is let whole, to one group at a time. That means there are few open dates — and that when you get one, it is entirely yours.',
     primary: 'Check availability',
     secondary: 'Ask us on WhatsApp',
-    reassure: ['Same-day reply', 'Free cancellation 14 days out', 'No hidden fees'],
+    reassure: ['A personal reply within 24 hours', 'No platform commission', 'Reception open around the clock'],
   },
 
   footer: {
@@ -267,10 +268,10 @@ export const en: Dict = {
     book: 'Book',
     rights: 'All rights reserved.',
     built: 'Porumbacu de Sus, Sibiu County',
-    address: 'Porumbacu de Sus, Sibiu County, Romania',
+    address: 'Strada Principală 489B, Porumbacu de Sus, Sibiu County',
   },
 
-  stickyBar: { label: 'from 450 RON / night · whole house', cta: 'Book' },
+  stickyBar: { label: 'from 500 RON / night · whole house', cta: 'Book' },
   langSwitch: { label: 'Change language', ro: 'Română', en: 'English' },
   skipToContent: 'Skip to content',
 };

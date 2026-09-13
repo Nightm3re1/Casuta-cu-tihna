@@ -63,8 +63,8 @@ const terraceYAt = (x: number) => {
 /** Fraction of the sticky track the construction sequence occupies. */
 const BUILD_SPAN = 0.86;
 
-const INK = '#C2E2CE';
-const GUIDE = '#6F9A83';
+const INK = '#EADDC8';
+const GUIDE = '#A38B6B';
 
 const ROOF_LINE = `M ${G.roof.eaveL.x} ${G.roof.eaveL.y} L ${G.roof.apex.x} ${G.roof.apex.y} L ${G.roof.eaveR.x} ${G.roof.eaveR.y}`;
 const ROOF_SLAB =
@@ -134,11 +134,11 @@ export default function HeroBuildAnimation({
 
   return (
     <div ref={track} className="relative h-[200vh] md:h-[220vh]">
-      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden bg-forest-950">
+      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden bg-bark-950">
         {/* Cold draughting light warming to dusk as the render lands. */}
-        <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_12%,#16281F_0%,#0A120E_72%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_12%,#2E251F_0%,#1C1611_72%)]" />
         <motion.div
-          className="absolute inset-0 bg-[linear-gradient(180deg,#1E2E38_0%,#4A4436_38%,#7A5636_58%,#3A3324_70%,#1D2E23_80%,#16241C_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,#3A3A3E_0%,#6B5540_36%,#9A6D42_56%,#5A422C_70%,#33291F_82%,#241C16_100%)]"
           style={{ opacity: skyO }}
         />
 
@@ -168,8 +168,8 @@ export default function HeroBuildAnimation({
               <stop offset="100%" stopColor="#DFA349" />
             </linearGradient>
             <linearGradient id="ridgeFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2E3C3C" />
-              <stop offset="100%" stopColor="#16211C" />
+              <stop offset="0%" stopColor="#4A4640" />
+              <stop offset="100%" stopColor="#241E18" />
             </linearGradient>
             <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="10" />
@@ -371,13 +371,13 @@ export default function HeroBuildAnimation({
             <line x1="602" y1={G.door.top} x2="602" y2={G.door.bottom} stroke="#372C24" strokeWidth="2" />
 
             {/* ground */}
-            <path d={`M0 ${G.ground} L1200 ${G.ground} L1200 760 L0 760 Z`} fill="#1A2A20" />
-            <path d={`M0 ${G.ground} Q300 588 600 ${G.ground} T1200 ${G.ground} L1200 646 L0 646 Z`} fill="#22362A" />
+            <path d={`M0 ${G.ground} L1200 ${G.ground} L1200 760 L0 760 Z`} fill="#241E18" />
+            <path d={`M0 ${G.ground} Q300 588 600 ${G.ground} T1200 ${G.ground} L1200 646 L0 646 Z`} fill="#33291F" />
 
             {/* spruce, for scale */}
             {[{ x: 986, s: 1.15 }, { x: 1064, s: 0.85 }, { x: 1132, s: 1 }, { x: 60, s: 0.95 }].map((t) => (
               <g key={t.x} transform={`translate(${t.x} ${G.ground}) scale(${t.s})`}>
-                <path d="M0 0 L-26 0 L-14 -30 L-21 -30 L-9 -60 L-15 -60 L0 -96 L15 -60 L9 -60 L21 -30 L14 -30 L26 0 Z" fill="#122019" />
+                <path d="M0 0 L-26 0 L-14 -30 L-21 -30 L-9 -60 L-15 -60 L0 -96 L15 -60 L9 -60 L21 -30 L14 -30 L26 0 Z" fill="#1E1A14" />
               </g>
             ))}
           </motion.g>
@@ -405,7 +405,7 @@ export default function HeroBuildAnimation({
         </svg>
 
         {/* Keeps the headline legible over whatever the animation is doing. */}
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(10,18,14,0.74)_0%,rgba(10,18,14,0.16)_38%,rgba(10,18,14,0.52)_76%,rgba(10,18,14,0.92)_100%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(28,22,17,0.76)_0%,rgba(28,22,17,0.18)_38%,rgba(28,22,17,0.54)_76%,rgba(28,22,17,0.93)_100%)]" />
 
         {overlay ? <div className="absolute inset-0">{overlay(p)}</div> : null}
       </div>

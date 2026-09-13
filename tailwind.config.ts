@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 /**
  * Brand tokens for Căsuța cu Tihnă.
  * Palette is derived from the property itself: Făgăraș spruce, 1923 oak timber,
- * limewashed plaster and the brass of old door furniture.
+ * limewashed plaster and the aged oak of the original beams.
  * See BRAND.md — swapping in the exact Instagram palette is a one-file change.
  */
 const config: Config = {

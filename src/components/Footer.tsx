@@ -16,7 +16,7 @@ export default function Footer({ dict, locale }: { dict: Dict; locale: Locale })
   };
 
   return (
-    <footer className="border-t border-forest-800 bg-forest-950 pb-28 pt-16 text-cream md:pb-14">
+    <footer className="border-t border-bark-800 bg-bark-950 pb-28 pt-16 text-cream md:pb-14">
       <div className="shell">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr] md:gap-10">
           <div>
@@ -28,7 +28,7 @@ export default function Footer({ dict, locale }: { dict: Dict; locale: Locale })
           </div>
 
           <nav aria-label={dict.footer.nav}>
-            <h2 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-brass-400">
+            <h2 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-clay-300">
               {dict.footer.nav}
             </h2>
             <ul className="mt-4 space-y-2.5">
@@ -43,7 +43,7 @@ export default function Footer({ dict, locale }: { dict: Dict; locale: Locale })
           </nav>
 
           <div>
-            <h2 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-brass-400">
+            <h2 className="text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-clay-300">
               {dict.footer.contact}
             </h2>
             <ul className="mt-4 space-y-2.5 text-sm">

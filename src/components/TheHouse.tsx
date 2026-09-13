@@ -23,18 +23,18 @@ export default function TheHouse({ dict, locale }: { dict: Dict; locale: Locale 
         <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
           <Reveal className="max-w-2xl">
             <p className="eyebrow">{dict.space.eyebrow}</p>
-            <h2 id="house-title" className="mt-4 text-display-lg font-semibold text-forest-900">
+            <h2 id="house-title" className="mt-4 text-display-lg font-semibold text-bark-900">
               {dict.space.title}
             </h2>
-            <p className="mt-5 text-[1.02rem] leading-relaxed text-forest-700">{dict.space.lede}</p>
+            <p className="mt-5 text-[1.02rem] leading-relaxed text-bark-700">{dict.space.lede}</p>
           </Reveal>
 
           <Reveal delay={100}>
             <dl className="grid grid-cols-2 gap-x-10 gap-y-5 sm:grid-cols-3 lg:grid-cols-2">
               {dict.space.specs.map((s) => (
                 <div key={s.label} className="border-t border-stone pt-3">
-                  <dt className="text-[0.66rem] uppercase tracking-[0.16em] text-forest-500">{s.label}</dt>
-                  <dd className="mt-1 font-display text-lg font-medium text-forest-900">{s.value}</dd>
+                  <dt className="text-[0.66rem] uppercase tracking-[0.16em] text-bark-500">{s.label}</dt>
+                  <dd className="mt-1 font-display text-lg font-medium text-bark-900">{s.value}</dd>
                 </div>
               ))}
             </dl>
@@ -49,14 +49,13 @@ export default function TheHouse({ dict, locale }: { dict: Dict; locale: Locale 
                 className={`group relative overflow-hidden rounded-sm bg-linen ${CELL[shot.size]}`}
               >
                 <Photo
-                  src={shot.src}
-                  scene={shot.scene}
+                  slug={shot.id}
                   alt={shot.alt[locale]}
                   priority={i === 0}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
                   className="transition-transform duration-[900ms] ease-smooth group-hover:scale-[1.04]"
                 />
-                <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-forest-950/85 to-transparent p-4 pt-10 text-[0.8rem] leading-snug text-cream opacity-0 transition-all duration-500 ease-smooth group-hover:translate-y-0 group-hover:opacity-100">
+                <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-bark-950/85 to-transparent p-4 pt-10 text-[0.8rem] leading-snug text-cream opacity-0 transition-all duration-500 ease-smooth group-hover:translate-y-0 group-hover:opacity-100">
                   {shot.alt[locale]}
                 </figcaption>
               </figure>

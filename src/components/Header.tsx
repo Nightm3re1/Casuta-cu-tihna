@@ -95,7 +95,7 @@ export default function Header({ dict, locale }: { dict: Dict; locale: Locale })
         <div className="shell flex h-[var(--header-h)] items-center justify-between gap-2 sm:gap-6">
           <Link
             href={`/${locale}`}
-            className={`min-w-0 flex-shrink transition-colors duration-500 ${onLight ? 'text-forest-800' : 'text-cream'}`}
+            className={`min-w-0 flex-shrink transition-colors duration-500 ${onLight ? 'text-bark-800' : 'text-cream'}`}
             aria-label={site.name}
           >
             <Logo compact markClass="h-8 w-8 md:h-9 md:w-9" />
@@ -108,12 +108,12 @@ export default function Header({ dict, locale }: { dict: Dict; locale: Locale })
                 href={`#${id}`}
                 aria-current={active === id ? 'true' : undefined}
                 className={`relative rounded-full px-3.5 py-2 text-[0.82rem] font-medium transition-colors duration-300 ${
-                  onLight ? 'text-forest-700 hover:text-forest-900' : 'text-cream/80 hover:text-cream'
+                  onLight ? 'text-bark-700 hover:text-bark-900' : 'text-cream/80 hover:text-cream'
                 }`}
               >
                 {labels[id]}
                 <span
-                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-brass-500 transition-transform duration-300 ease-smooth ${
+                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-clay-500 transition-transform duration-300 ease-smooth ${
                     active === id ? 'scale-x-100' : 'scale-x-0'
                   }`}
                 />
@@ -133,7 +133,7 @@ export default function Header({ dict, locale }: { dict: Dict; locale: Locale })
               aria-controls="mobile-menu"
               aria-label={open ? dict.nav.close : dict.nav.menu}
               className={`-mr-1 grid h-11 w-11 place-items-center rounded-full transition-colors lg:hidden ${
-                onLight ? 'text-forest-800 hover:bg-forest-800/8' : 'text-cream hover:bg-cream/10'
+                onLight ? 'text-bark-800 hover:bg-bark-800/8' : 'text-cream hover:bg-cream/10'
               }`}
             >
               <span className="relative block h-4 w-6">
@@ -171,7 +171,7 @@ export default function Header({ dict, locale }: { dict: Dict; locale: Locale })
                 key={id}
                 href={`#${id}`}
                 onClick={() => setOpen(false)}
-                className="border-b border-stone/60 py-4 font-display text-3xl text-forest-900 transition-colors hover:text-brass-600"
+                className="border-b border-stone/60 py-4 font-display text-3xl text-bark-900 transition-colors hover:text-clay-600"
                 style={{ animation: open ? `fade-up 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 55}ms both` : undefined }}
               >
                 {labels[id]}
@@ -184,7 +184,7 @@ export default function Header({ dict, locale }: { dict: Dict; locale: Locale })
             </a>
             <a
               href={site.contact.phoneHref}
-              className="mt-3 block text-center text-sm text-forest-600 underline underline-offset-4"
+              className="mt-3 block text-center text-sm text-bark-600 underline underline-offset-4"
             >
               {site.contact.phone}
             </a>
@@ -214,9 +214,9 @@ function LocaleSwitch({ locale, dict, onLight }: { locale: Locale; dict: Dict; o
             aria-current={isActive ? 'true' : undefined}
             className={`rounded-full px-2.5 py-1.5 transition-colors duration-300 ${
               isActive
-                ? 'bg-brass-500 text-forest-950'
+                ? 'bg-clay-500 text-bark-950'
                 : onLight
-                  ? 'text-forest-600 hover:text-forest-900'
+                  ? 'text-bark-600 hover:text-bark-900'
                   : 'text-cream/70 hover:text-cream'
             }`}
           >

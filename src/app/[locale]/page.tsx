@@ -30,7 +30,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(typed)) }}
       />
       <Hero dict={dict} />
-      <TrustBar dict={dict} />
+      <TrustBar dict={dict} locale={typed} />
       <Story dict={dict} locale={typed} />
       <Benefits dict={dict} />
       <TheHouse dict={dict} locale={typed} />

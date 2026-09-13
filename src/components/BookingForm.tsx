@@ -87,11 +87,11 @@ export default function BookingForm({ locale, tone = 'dark' }: { locale: Locale;
   const dark = tone === 'dark';
   const field = `w-full rounded-sm border px-3.5 py-3 text-sm transition-colors ${
     dark
-      ? 'border-cream/20 bg-cream/[0.06] text-cream [color-scheme:dark] placeholder:text-cream/60 focus:border-brass-400'
-      : 'border-stone bg-cream text-forest-900 focus:border-brass-500'
+      ? 'border-cream/20 bg-cream/[0.06] text-cream [color-scheme:dark] placeholder:text-cream/60 focus:border-clay-300'
+      : 'border-stone bg-cream text-bark-900 focus:border-clay-500'
   }`;
   const label = `mb-1.5 block text-[0.65rem] font-semibold uppercase tracking-[0.16em] ${
-    dark ? 'text-cream/70' : 'text-forest-500'
+    dark ? 'text-cream/70' : 'text-bark-500'
   }`;
 
   return (
@@ -131,7 +131,7 @@ export default function BookingForm({ locale, tone = 'dark' }: { locale: Locale;
         {error ? (
           <span className={dark ? 'text-ember' : 'text-ember'}>{error}</span>
         ) : nights > 0 ? (
-          <span className={dark ? 'text-cream/70' : 'text-forest-500'}>{t.nights(nights)}</span>
+          <span className={dark ? 'text-cream/70' : 'text-bark-500'}>{t.nights(nights)}</span>
         ) : null}
       </p>
 

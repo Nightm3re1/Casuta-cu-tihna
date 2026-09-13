@@ -19,10 +19,10 @@ const ICONS = [
 /** Six reasons, each a countable fact rather than an adjective. */
 export default function Benefits({ dict }: { dict: Dict }) {
   return (
-    <section className="relative bg-forest-900 py-24 text-cream grain md:py-36" aria-labelledby="benefits-title">
+    <section className="relative bg-bark-900 py-24 text-cream grain md:py-36" aria-labelledby="benefits-title">
       <div className="shell relative">
         <Reveal className="max-w-2xl">
-          <p className="eyebrow !text-brass-400">{dict.benefits.eyebrow}</p>
+          <p className="eyebrow !text-clay-300">{dict.benefits.eyebrow}</p>
           <h2 id="benefits-title" className="mt-4 text-display-lg font-semibold">
             {dict.benefits.title}
           </h2>
@@ -32,7 +32,7 @@ export default function Benefits({ dict }: { dict: Dict }) {
         <ul className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {dict.benefits.items.map((item, i) => (
             <Reveal as="li" key={item.title} delay={i * 70}>
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-brass-500/35 text-brass-400">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-clay-500/35 text-clay-300">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d={ICONS[i % ICONS.length]} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
