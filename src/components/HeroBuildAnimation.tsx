@@ -65,6 +65,21 @@ const ROOF_SLAB =
   `L ${G.roof.eaveR.x} ${G.roof.eaveR.y + G.roof.depth} L ${G.roof.apex.x} ${G.roof.apex.y + G.roof.depth} ` +
   `L ${G.roof.eaveL.x} ${G.roof.eaveL.y + G.roof.depth} Z`;
 
+/** Inked construction stages, in the order a builder would work them. */
+const STAGES: readonly [number, number][] = [
+  [0.05, 0.13], // ground line
+  [0.12, 0.24], // stone footing
+  [0.2, 0.33],  // sill plate and posts
+  [0.3, 0.45],  // log courses
+  [0.42, 0.56], // roof truss
+  [0.53, 0.67], // roof boarding
+  [0.63, 0.72], // chimney
+  [0.68, 0.79], // joinery
+  [0.75, 0.86], // terrace
+];
+/** Index of the log-course layer, which sits back from the primary frame lines. */
+const COURSES = 3;
+
 /** Attributes that leave a path undrawn before hydration, avoiding a flash. */
 const undrawn = { pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 } as const;
 
@@ -101,19 +116,7 @@ export default function HeroBuildAnimation({
   const smokeR = useRef<SVGGElement>(null);
   const skyR = useRef<HTMLDivElement>(null);
 
-  /** Inked construction stages, in the order a builder would work. */
   const inkR = useRef<(SVGPathElement | SVGLineElement | null)[]>([]);
-  const STAGES: [number, number][] = [
-    [0.05, 0.13], // ground line
-    [0.12, 0.24], // stone footing
-    [0.2, 0.33],  // sill plate and posts
-    [0.3, 0.45],  // log courses
-    [0.42, 0.56], // roof truss
-    [0.53, 0.67], // roof boarding
-    [0.63, 0.72], // chimney
-    [0.68, 0.79], // joinery
-    [0.75, 0.86], // terrace
-  ];
 
   const apply = useCallback(
     (raw: number) => {
@@ -134,7 +137,7 @@ export default function HeroBuildAnimation({
         if (!el) return;
         el.style.strokeDashoffset = String(1 - seg(p, a, b));
         // Courses sit slightly back from the primary frame lines.
-        el.style.opacity = String(i === 3 ? inkO * 0.85 : inkO);
+        el.style.opacity = String(i === COURSES ? inkO * 0.85 : inkO);
       });
 
       const render = seg(p, 0.84, 0.98);
