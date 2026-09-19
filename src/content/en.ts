@@ -35,7 +35,7 @@ export const en: Dict = {
       { value: '1923', label: 'carved in the beam' },
       { value: '80 m²', label: 'entirely yours' },
       { value: '4', label: 'guests' },
-      { value: '9.9', label: 'on Booking · 52 reviews' },
+      { value: '9.9', label: 'Booking score' },
     ],
   },
 

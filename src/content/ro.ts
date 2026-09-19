@@ -35,7 +35,7 @@ export const ro: Dict = {
       { value: '1923', label: 'anul de pe grindă' },
       { value: '80 m²', label: 'numai pentru tine' },
       { value: '4', label: 'oaspeți' },
-      { value: '9,9', label: 'pe Booking · 52 recenzii' },
+      { value: '9,9', label: 'nota pe Booking' },
     ],
   },
 

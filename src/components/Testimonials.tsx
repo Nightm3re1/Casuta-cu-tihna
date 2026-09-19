@@ -147,8 +147,9 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
         </ul>
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-6">
-          <div className="flex gap-2">
+        {/* Wraps on phones so the source link drops under the dots instead of squeezing past the viewport. */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+          <div className="flex shrink-0 gap-2">
             {reviews.map((r, i) => (
               <button
                 key={r.id}
@@ -166,7 +167,7 @@ export default function Testimonials({ dict, locale }: { dict: Dict; locale: Loc
             href={reviewSummary.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-cream/70 underline-offset-4 transition-colors hover:text-clay-200 hover:underline"
+            className="shrink-0 whitespace-nowrap text-sm text-cream/70 underline-offset-4 transition-colors hover:text-clay-200 hover:underline"
           >
             {dict.reviews.sourceLabel}: {reviewSummary.source} →
           </a>

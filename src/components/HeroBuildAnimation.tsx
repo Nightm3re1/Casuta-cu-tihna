@@ -67,14 +67,14 @@ const ROOF_SLAB =
 
 /** Inked construction stages, in the order a builder would work them. */
 const STAGES: readonly [number, number][] = [
-  [0.05, 0.13], // ground line
-  [0.12, 0.24], // stone footing
-  [0.2, 0.33],  // sill plate and posts
-  [0.3, 0.45],  // log courses
-  [0.42, 0.56], // roof truss
-  [0.53, 0.67], // roof boarding
-  [0.63, 0.72], // chimney
-  [0.68, 0.79], // joinery
+  [0.06, 0.14], // ground line — a single stroke, safe under the fading headline
+  [0.14, 0.26], // stone footing — first real shape, after the copy has cleared
+  [0.22, 0.35], // sill plate and posts
+  [0.31, 0.46], // log courses
+  [0.43, 0.57], // roof truss
+  [0.54, 0.68], // roof boarding
+  [0.64, 0.73], // chimney
+  [0.69, 0.8],  // joinery
   [0.75, 0.86], // terrace
 ];
 /** Index of the log-course layer, which sits back from the primary frame lines. */
@@ -127,10 +127,10 @@ export default function HeroBuildAnimation({
         if (el) (el as HTMLElement).style.setProperty(prop, value);
       };
 
-      const inkO = 1 - seg(p, 0.84, 0.95);
+      const inkO = 1 - seg(p, 0.86, 0.95);
       set(gridR.current, 'opacity', String(hold(p, -0.02, 0, 0.8, 0.9)));
       set(titleR.current, 'opacity', String(hold(p, 0, 0.05, 0.78, 0.88)));
-      set(dimsR.current, 'opacity', String(hold(p, 0.08, 0.18, 0.78, 0.88)));
+      set(dimsR.current, 'opacity', String(hold(p, 0.14, 0.24, 0.78, 0.88)));
 
       STAGES.forEach(([a, b], i) => {
         const el = inkR.current[i];
@@ -140,13 +140,13 @@ export default function HeroBuildAnimation({
         el.style.opacity = String(i === COURSES ? inkO * 0.85 : inkO);
       });
 
-      const render = seg(p, 0.84, 0.98);
+      const render = seg(p, 0.86, 0.98);
       set(renderR.current, 'opacity', String(render));
       set(ridgeR.current, 'opacity', String(render));
       set(ridgeR.current, 'transform', `translateY(${(1 - seg(p, 0.8, 1)) * 26}px)`);
       set(lightsR.current, 'opacity', String(seg(p, 0.9, 1)));
       set(smokeR.current, 'opacity', String(seg(p, 0.92, 1)));
-      set(skyR.current, 'opacity', String(seg(p, 0.82, 1)));
+      set(skyR.current, 'opacity', String(seg(p, 0.84, 1)));
 
       onProgress?.(p);
     },
@@ -168,10 +168,19 @@ export default function HeroBuildAnimation({
 
         <p className="sr-only">{label}</p>
 
+        {/*
+          The drawing is 1200×760, but the viewBox is padded to 1680×1280 and
+          rendered with `slice`, so it fills the frame on every aspect ratio:
+          portrait screens crop the side margins, landscape screens crop sky and
+          ground. The extra width keeps a 16:9 screen from blowing the house up
+          so far that the chimney smoke rises under the header. Nothing is
+          scaled with CSS and the SVG never ends short of the frame, so there
+          is no seam for the eye to catch.
+        */}
         <svg
-          viewBox="0 0 1200 760"
-          preserveAspectRatio="xMidYMid meet"
-          className="relative w-full max-h-[88svh] scale-[1.5] sm:scale-100"
+          viewBox="-240 -260 1680 1280"
+          preserveAspectRatio="xMidYMid slice"
+          className="absolute inset-0 h-full w-full"
           role="presentation"
           focusable="false"
         >
@@ -201,12 +210,12 @@ export default function HeroBuildAnimation({
           </defs>
 
           {/* Draughting grid */}
-          <rect ref={gridR} width="1200" height="760" fill="url(#bpGrid)" style={{ opacity: 0 }} />
+          <rect ref={gridR} x="-240" y="-260" width="1680" height="1280" fill="url(#bpGrid)" style={{ opacity: 0 }} />
 
           {/* The ridge behind, revealed with the render */}
           <g ref={ridgeR} style={{ opacity: 0 }}>
             <path
-              d="M0 470 L120 402 L206 442 L300 356 L392 424 L470 372 L560 430 L648 358 L742 418 L836 366 L930 432 L1024 388 L1120 440 L1200 404 L1200 620 L0 620 Z"
+              d="M-240 428 L-150 384 L-62 446 L0 470 L120 402 L206 442 L300 356 L392 424 L470 372 L560 430 L648 358 L742 418 L836 366 L930 432 L1024 388 L1120 440 L1200 404 L1292 368 L1372 438 L1440 396 L1440 620 L-240 620 Z"
               fill="url(#ridgeFill)"
               opacity="0.72"
             />
@@ -221,7 +230,9 @@ export default function HeroBuildAnimation({
           {/* Title block */}
           <g
             ref={titleR}
-            className="hidden sm:block"
+            // Sits in the left margin, which portrait screens crop — so it only
+            // shows in landscape, where the full drawing width is on screen.
+            className="hidden sm:landscape:block"
             style={{ opacity: 0 }}
             fontFamily="ui-monospace, SFMono-Regular, monospace"
           >
@@ -240,7 +251,9 @@ export default function HeroBuildAnimation({
             <text x={(G.body.x1 + G.body.x2) / 2} y="638" fill={GUIDE} fontSize="13" textAnchor="middle" stroke="none">10.40 m</text>
             <line x1="908" y1={G.roof.apex.y} x2="908" y2={G.ground} />
             <path d={`M901 ${G.roof.apex.y} L915 ${G.roof.apex.y} M901 ${G.ground} L915 ${G.ground}`} />
-            <text x="924" y="382" fill={GUIDE} fontSize="13" stroke="none">6.80 m</text>
+            {/* Portrait crops the right margin, so the height label swaps to the inside of its line. */}
+            <text x="924" y="382" fill={GUIDE} fontSize="13" stroke="none" className="hidden landscape:block">6.80 m</text>
+            <text x="896" y="382" fill={GUIDE} fontSize="13" stroke="none" textAnchor="end" className="landscape:hidden">6.80 m</text>
           </g>
 
           {/* ── Construction, in order of trade ─────────────────────────── */}
@@ -396,11 +409,11 @@ export default function HeroBuildAnimation({
             <line x1="602" y1={G.door.top} x2="602" y2={G.door.bottom} stroke="#372C24" strokeWidth="2" />
 
             {/* ground */}
-            <path d={`M0 ${G.ground} L1200 ${G.ground} L1200 760 L0 760 Z`} fill="#1D2417" />
-            <path d={`M0 ${G.ground} Q300 588 600 ${G.ground} T1200 ${G.ground} L1200 646 L0 646 Z`} fill="#2C3720" />
+            <path d={`M-240 ${G.ground} L1440 ${G.ground} L1440 1020 L-240 1020 Z`} fill="#1D2417" />
+            <path d={`M-240 ${G.ground} Q60 588 360 ${G.ground} T960 ${G.ground} T1560 ${G.ground} L1440 646 L-240 646 Z`} fill="#2C3720" />
 
             {/* spruce, for scale */}
-            {[{ x: 986, s: 1.15 }, { x: 1064, s: 0.85 }, { x: 1132, s: 1 }, { x: 60, s: 0.95 }].map((t) => (
+            {[{ x: 986, s: 1.15 }, { x: 1064, s: 0.85 }, { x: 1132, s: 1 }, { x: 1318, s: 1.1 }, { x: 60, s: 0.95 }, { x: -128, s: 1.05 }].map((t) => (
               <g key={t.x} transform={`translate(${t.x} ${G.ground}) scale(${t.s})`}>
                 <path d="M0 0 L-26 0 L-14 -30 L-21 -30 L-9 -60 L-15 -60 L0 -96 L15 -60 L9 -60 L21 -30 L14 -30 L26 0 Z" fill="#151C12" />
               </g>

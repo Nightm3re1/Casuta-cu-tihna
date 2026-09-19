@@ -86,9 +86,9 @@ export default function Header({ dict, locale }: { dict: Dict; locale: Locale })
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-500 ease-smooth ${
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-500 ease-smooth ${
           onLight
-            ? 'bg-cream/90 shadow-[0_1px_0_0_rgba(217,205,184,0.9)] backdrop-blur-xl'
+            ? 'bg-cream shadow-[0_1px_0_0_rgba(231,225,218,1)]'
             : 'bg-transparent'
         }`}
       >
@@ -212,7 +212,7 @@ function LocaleSwitch({ locale, dict, onLight }: { locale: Locale; dict: Dict; o
             href={`/${l}`}
             hrefLang={l}
             aria-current={isActive ? 'true' : undefined}
-            className={`rounded-full px-2.5 py-1.5 transition-colors duration-300 ${
+            className={`rounded-full px-2 py-1.5 transition-colors duration-300 xs:px-2.5 ${
               isActive
                 ? 'bg-clay-500 text-cream'
                 : onLight

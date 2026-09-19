@@ -22,12 +22,15 @@ export default function Hero({ dict }: { dict: Dict }) {
   const onProgress = useCallback((p: number) => {
     const copy = copyRef.current;
     if (copy) {
-      // The words step aside so the drawing can be read.
-      copy.style.opacity = String(1 - seg(p, 0.12, 0.3));
-      copy.style.transform = `translateY(${-44 * seg(p, 0, 0.3)}px)`;
-      copy.style.pointerEvents = p > 0.25 ? 'none' : '';
+      // The words are gone before the footing is drawn, so nothing ever
+      // ghosts over the blueprint; a slight lift, never enough to reach the
+      // header.
+      const t = seg(p, 0.03, 0.14);
+      copy.style.opacity = String(1 - t);
+      copy.style.transform = `translateY(${-14 * t}px)`;
+      copy.style.pointerEvents = p > 0.1 ? 'none' : '';
     }
-    if (hintRef.current) hintRef.current.style.opacity = String(1 - seg(p, 0, 0.06));
+    if (hintRef.current) hintRef.current.style.opacity = String(1 - seg(p, 0, 0.04));
     const stats = statsRef.current;
     if (stats) {
       // …then the figures land once the house stands.
@@ -45,7 +48,7 @@ export default function Hero({ dict }: { dict: Dict }) {
           ref={copyRef}
           className="shell absolute inset-0 flex flex-col items-center justify-center pb-24 pt-[var(--header-h)] text-center"
         >
-          <p className="eyebrow !text-clay-200">{dict.hero.eyebrow}</p>
+          <p className="eyebrow !text-clay-200 tracking-[0.12em] sm:tracking-[0.18em]">{dict.hero.eyebrow}</p>
           <h1
             id="hero-title"
             className="mt-4 max-w-3xl text-display-xl font-semibold text-cream text-shadow-hero"

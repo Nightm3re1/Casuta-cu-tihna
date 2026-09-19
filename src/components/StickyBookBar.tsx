@@ -34,7 +34,7 @@ export default function StickyBookBar({ dict }: { dict: Dict }) {
   return (
     <div
       aria-hidden={!show}
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-bark-800 bg-bark-950/95 backdrop-blur-lg transition-transform duration-500 ease-smooth md:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-bark-800 bg-bark-950 transition-transform duration-500 ease-smooth md:hidden ${
         show ? 'translate-y-0' : 'translate-y-full'
       }`}
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
